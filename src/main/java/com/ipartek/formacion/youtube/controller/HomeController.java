@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.youtube.model.VideoArrayListDAO;
+import com.ipartek.formacion.youtube.model.VideoDAO;
 import com.ipartek.formacion.youtube.pojo.Usuario;
 import com.ipartek.formacion.youtube.pojo.Video;
 
@@ -32,7 +33,7 @@ public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String OP_ELIMINAR = "1";
-	private static VideoArrayListDAO dao;
+	private static VideoDAO dao;
 	private ArrayList<Video> videos;	
 	private Video videoInicio;
 
@@ -41,7 +42,7 @@ public class HomeController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {	
 		super.init(config);
 		//Se ejecuta solo con la 1º petición, el resto de peticiones iran a "service"
-		dao = VideoArrayListDAO.getInstance();
+		dao = VideoDAO.getInstance();
 	}
 	
 	
