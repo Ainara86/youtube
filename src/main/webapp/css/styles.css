@@ -1,0 +1,42 @@
+
+body{
+	height:30rem;
+	padding-bottom: 10px;
+	padding-top: 100px;
+	text-align: center;
+}
+
+/*Estilos navbar*/
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+/*Estilo para el icono de usuario*/
+.fa-user{
+    color:white;
+    font-size: 15px;
+    padding-top: 12px;
+}
+
+/*Estilo para el logo*/
+.logo{
+    width:150px;
+}
+
+.error{
+	height:30rem;
+	padding-bottom: 10px;
+	padding-top: 100px;
+	text-align: center;
+}
+
+.pb-5, .py-5 {
+    padding-bottom: 1rem!important;
+    padding-top: 1rem!important;
+}
