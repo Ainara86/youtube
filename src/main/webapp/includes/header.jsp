@@ -4,10 +4,12 @@
 
 
 
-
+<c:set var="idioma" value="${(not empty sessionScope.idioma)?sessionScope.idioma:'es_ES' }" />
+<fmt:setLocale value="${idioma}" />
+<fmt:setBundle basename="idiomas" /> 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${idioma}">
 	<head>
 		<!-- Comenza todas las URLs desde el href indicado -->
 		<base href="<%=request.getContextPath()%>/">
@@ -34,8 +36,14 @@
 			href="https://blackrockdigital.github.io/startbootstrap-shop-item/css/shop-item.css"
 			rel="stylesheet">
 		
-		<link href="css/styles.css?v3" rel="stylesheet"></link>
+		<link href="css/styles.css?v2" rel="stylesheet"></link>
 	
 	</head>
 	
 	<body>
+	
+	<h1>
+	<fmt:message key="msj.video.por.visualizar">
+		<fmt:param>5</fmt:param>
+	</fmt:message>
+	</h1>

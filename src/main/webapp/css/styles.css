@@ -21,12 +21,54 @@ body{
 .fa-user{
     color:white;
     font-size: 15px;
-    padding-top: 12px;
+    padding-top: 0px;
 }
+
+/*Estilo navbar usuario*/
+.usuario{
+	
+    display: flex;
+    align-items: right;
+    padding-left: 20rem;
+}
+.usuario label{
+	color:white;
+}
+.usuario input{
+	margin: 6px;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white!important;
+}
+
+.nav-item a{
+	padding-left: 5px;
+}
+.nav-item img{
+	width:40px;
+	height:30px;
+}
+
+
+.form-inline .usuario{
+	
+    display: flex;
+    align-items: right;
+    padding-left: 30rem;
+}
+.form-inline .usuario label{
+	color:white;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white!important;
+}
+
 
 /*Estilo para el logo*/
 .logo{
-    width:150px;
+    width:50px;
 }
 
 .error{

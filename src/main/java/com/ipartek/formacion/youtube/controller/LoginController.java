@@ -1,6 +1,10 @@
 package com.ipartek.formacion.youtube.controller;
 
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -19,7 +23,7 @@ import com.ipartek.formacion.youtube.pojo.Usuario;
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -41,58 +45,32 @@ public class LoginController extends HttpServlet {
 		
 		try {
 			
+			//idiomas @see com.ipartek.formacion.youtube.filter.IdiomaFilter
+			String idioma = (String)session.getAttribute("idioma");			
+			Locale locale = new Locale( idioma.split("_")[0] , idioma.split("_")[1] );			
+			ResourceBundle idiomas = ResourceBundle.getBundle("idiomas", locale );
+						
+			
 			//recoger parametros
-			String usuario = request.getParameter("usuario");
+			String usuarioNombre = request.getParameter("usuario");
 			String pass = request.getParameter("pass");
-			String cookieNombre = (String) request.getParameter("recordar");
-
-			//comprobar usuario TODO contra BBDD
-			if ( "admin".equals(pass) && "admin".equals(usuario) || 
-				  "pepe".equals(pass) && "pepe".equals(usuario)  ||
-				  "manoli".equals(pass) && "manoli".equals(usuario)||
-				  "josepo".equals(pass) && "josepo".equals(usuario))  {
 				
-				alert.setTexto("Bienvenido " + usuario );
+			//comprobar usuario TODO contra BBDD
+			if ( "admin".equals(pass) && "admin".equals(usuarioNombre) || 
+				  "pepe".equals(pass) && "pepe".equals(usuarioNombre)  ||
+				  "manoli".equals(pass) && "manoli".equals(usuarioNombre) )  {
+				
+				alert.setTexto(MessageFormat.format(idiomas.getString("msj.bienvenida"), usuarioNombre) );
 				alert.setTipo(Alert.PRIMARY);
 				
-				session.setAttribute("usuario", new Usuario(usuario, pass));
-				session.setMaxInactiveInterval(60*5);
-
-				Cookie cookies[] = request.getCookies();
-				boolean existe = false;
-				int pos = 0;
-
-				if ("on".equals(cookieNombre)) {
-					for (int i = 0; i < cookies.length; i++) {
-						if ("nombreRecordado".equals(cookies[i].getName())) {
-							existe = true;
-							pos = i;
-						}
-					}
-					if (existe) {
-						cookies[pos].setValue(usuario);
-					} else {
-						Cookie nombreRecordado = new Cookie("nombreRecordado", usuario);
-						nombreRecordado.setMaxAge(-1);
-						response.addCookie(nombreRecordado);
-					}
-				} else {
-					for (int i = 0; i < cookies.length; i++) {
-						if ("nombreRecordado".equals(cookies[i].getName())) {
-							existe = true;
-							pos = i;
-						}
-					}
-					if (existe) {
-						Cookie nombreRecordado = new Cookie("nombreRecordado", usuario);
-						nombreRecordado.setMaxAge(0);
-						response.addCookie(nombreRecordado);
-					}
-				};
+				//guardar Usuario en session
+				Usuario u = new Usuario(usuarioNombre, pass);
 				
-			
+				session.setAttribute("usuario", u);
+				session.setMaxInactiveInterval(60*5); // 5min
 				
 				
+				gestionarCookies(request, response, u);
 				
 			}else{
 				
@@ -110,7 +88,23 @@ public class LoginController extends HttpServlet {
 		
 		
 	}
-	
-	
+
+	private void gestionarCookies(HttpServletRequest request, HttpServletResponse response, Usuario u) {
+		
+		String recordar = (String)request.getParameter("recuerdame");
+		Cookie cNombre = new Cookie("cNombre", u.getNombre());
+				
+		if ( recordar != null) {
+			
+			cNombre.setMaxAge(60*60*24*30*3); // 3meses
+			
+		}else {
+			cNombre.setMaxAge(0); // No guardar
+		}
+		
+		response.addCookie(cNombre);
+		
+		
+	}
 
 }
