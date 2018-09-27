@@ -15,7 +15,7 @@
 					<c:forEach items="${videos}" var="v">          
 						<li class="list-group-item d-flex justify-content-between align-items-center">     
 							<a href="inicio?id=${v.id}">${v.nombre}</a>
-							<a href="inicio?id=${v.id}&op=${HomeController.OP_ELIMINAR}"><i style="color:red;" class="float-right fas fa-trash-alt"></i></a>
+							<a href="inicio?id=${v.id}&op=1"><i style="color:red;" class="float-right fas fa-trash-alt"></i></a>
 						</li>
 					</c:forEach>
 				</ul>
@@ -42,7 +42,7 @@
 			<div class="col-lg-9">
 				<div class="card mt-4">
 					<iframe id="iframe" width="823" height="415"
-							src="https://www.youtube.com/embed/${videoInicio.id}?"
+							src="https://www.youtube.com/embed/${videoInicio.codigo}?"
 							frameborder="0" ></iframe>
 	
 					<div class="card-body">

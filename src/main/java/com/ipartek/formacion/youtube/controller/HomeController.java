@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ipartek.formacion.youtube.model.VideoArrayListDAO;
 import com.ipartek.formacion.youtube.model.VideoDAO;
 import com.ipartek.formacion.youtube.pojo.Usuario;
 import com.ipartek.formacion.youtube.pojo.Video;
@@ -90,7 +89,7 @@ public class HomeController extends HttpServlet {
 		try {
 			
 			//parametros
-			String id = request.getParameter("id");
+			long id = Long.parseLong(  request.getParameter("id"));
 			String op = request.getParameter("op");
 			
 			//eliminar ?			
@@ -142,11 +141,11 @@ public class HomeController extends HttpServlet {
 		try {
 			
 			//recoger parametros
-			String id = request.getParameter("id");
+			String codigo = request.getParameter("codigo");
 			String nombre = request.getParameter("nombre");
 			
 			//insertar
-			videoInicio = new Video(id, nombre);
+			videoInicio = new Video(codigo, nombre);
 			dao.insert(videoInicio);
 			
 			//pedir listado			

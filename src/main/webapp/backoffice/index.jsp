@@ -1,6 +1,6 @@
+<%@page import="com.ipartek.formacion.youtube.pojo.Usuario"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="com.ipartek.formacion.youtube.pojo.Usuario"%>
 
 <c:set var="idioma" value="en_EN" />
 <fmt:setLocale value="${idioma}" />
