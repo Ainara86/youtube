@@ -6,6 +6,10 @@ body{
 	text-align: center;
 }
 
+.video-placeholder iframe{
+	width: 800px;
+}
+
 /*Estilos navbar*/
 .fixed-top {
     position: fixed;

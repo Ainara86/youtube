@@ -36,7 +36,7 @@
 			href="https://blackrockdigital.github.io/startbootstrap-shop-item/css/shop-item.css"
 			rel="stylesheet">
 		
-		<link href="css/styles.css?v2" rel="stylesheet"></link>
+		<link href="css/styles.css?v3" rel="stylesheet"></link>
 	
 	</head>
 	

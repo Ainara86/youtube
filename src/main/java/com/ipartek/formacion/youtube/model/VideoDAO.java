@@ -8,6 +8,7 @@ import java.util.List;
 import com.ipartek.formacion.youtube.pojo.Video;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class VideoDAO implements CrudAble<Video> {
 
@@ -35,7 +36,7 @@ public class VideoDAO implements CrudAble<Video> {
 		boolean resul = false;
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_INSERT);) {
+				PreparedStatement ps = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
 
 			ps.setString(1, pojo.getCodigo());
 			ps.setString(2, pojo.getNombre());
@@ -43,6 +44,14 @@ public class VideoDAO implements CrudAble<Video> {
 			int affectedRows = ps.executeUpdate();
 			if (affectedRows == 1) {
 				resul = true;
+				//Conseguir ID generado
+				try (ResultSet rs = ps.getGeneratedKeys()){
+					while(rs.next()) {
+						pojo.setId(rs.getLong(1));
+						resul=true;
+					}
+				}
+				
 			}
 
 		} catch (Exception e) {
@@ -94,26 +103,40 @@ public class VideoDAO implements CrudAble<Video> {
 
 	@Override
 	public boolean update(Video pojo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delete(long id) {
-		
 		boolean resul = false;
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_DELETE);) {
+				PreparedStatement ps = con.prepareStatement(SQL_UPDATE);) {
 
-			ps.setLong(1, id);
+			ps.setString(1, pojo.getCodigo());
+			ps.setString(2, pojo.getNombre());
+			ps.setLong(3, pojo.getId());
 
 			int affectedRows = ps.executeUpdate();
 			if (affectedRows == 1) {
 				resul = true;
+				
+				
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
+	}
+
+	@Override
+	public boolean delete(String id) {
+		boolean resul = false;
+		try (Connection con = ConnectionManager.getConnection();
+			 PreparedStatement ps = con.prepareStatement(SQL_DELETE);){
+			
+			ps.setString(1, id);			
+			if ( ps.executeUpdate() == 1 ) {
+				resul = true;
+			}			
+			
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resul;
