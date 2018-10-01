@@ -36,14 +36,9 @@
 			href="https://blackrockdigital.github.io/startbootstrap-shop-item/css/shop-item.css"
 			rel="stylesheet">
 		
-		<link href="css/styles.css?v3" rel="stylesheet"></link>
+		<link href="css/styles.css?<%=System.currentTimeMillis()%>" rel="stylesheet"></link>
 	
 	</head>
 	
 	<body>
 	
-	<h1>
-	<fmt:message key="msj.video.por.visualizar">
-		<fmt:param>5</fmt:param>
-	</fmt:message>
-	</h1>

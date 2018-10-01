@@ -5,6 +5,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.net.URLDecoder"%>
 
+
 <footer class="py-5 bg-dark">
 	<div class="container">
 		<% 
@@ -48,13 +49,15 @@
 		
 		function showModalModificar( idVideo, nombre ){
 			
-			console.log('showModalModificar id=' + idVideo +  " nombre=" + nombre);
+			console.log('showModalModificar id=' + idVideo + ' nombre='+ nombre);
 			$('#modalModificar').modal('show');
 			document.getElementById('id').value = idVideo;
 			document.getElementById('nombre').value = nombre;
 			
 			
 		}
+		
+		
 		/*YOUTUBE IFRAME API*/
 		var player;
 

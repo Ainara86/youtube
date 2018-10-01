@@ -53,6 +53,9 @@ body{
 	width:40px;
 	height:30px;
 }
+.navbar-nav {
+    padding-right: 58rem;
+}
 
 
 .form-inline .usuario{
@@ -85,4 +88,9 @@ body{
 .pb-5, .py-5 {
     padding-bottom: 1rem!important;
     padding-top: 1rem!important;
+}
+
+/**/
+main.container{
+	min-height:68vh;
 }

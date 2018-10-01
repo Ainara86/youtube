@@ -1,35 +1,25 @@
 <!-- Navigation -->
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-	<div class="container">
-		<a class="navbar-brand" href="#"><img src="images/log.png" class="logo"></a>
-     	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-       		<span class="navbar-toggler-icon"></span>
-     	</button>
-
-
-		<div class="collapse navbar-collapse" id="navbarResponsive">
-			<ul class="navbar-nav ml-auto">
-	     	<li class="nav-item active"><a href="inicio?idioma=es_ES"><img src="images/esbandera.png"></a></li>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#"><img src="images/log.png" class="logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a href="inicio?idioma=es_ES"><img src="images/esbandera.png"></a></li>
 	     	<li class="nav-item active"><a href="inicio?idioma=eu_ES"><img src="images/eubandera.png"></a></li>
 	     	<li class="nav-item active"><a href="inicio?idioma=en_EN"><img src="images/enbandera.png"></a></li>
-	     	</ul>
-	       	<ul class="navbar-nav ml-auto">
-				<li class="nav-item active">
-					<!-- usuario sin pasar por login -->
-					<c:if test="${empty sessionScope.usuario}">
-						<!-- formulario Login -->
-			            <form action="login" method="post" class="mt-2 mt-md-0 usuario" id="#top">
-			           		<input name="usuario" value="${cookie.cNombre.value}" class="form-control mr-sm-2" type="text" placeholder="Nombre Usuario" required pattern=".{3,30}" autofocus >
-			           		<input name="pass" value="" class="form-control mr-sm-2" type="password" placeholder="Contraseña" required pattern=".{2,50}">
-			           		<label for="recuerdame">¿Recordar?</label>
-			           		<input type="checkbox" name="recuerdame" ${(not empty cookie.cNombre.value)?"checked":""} >		           		 
-			           		<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Entrar</button>
-			         	</form>
-			       </c:if>         
-			      </li>            
-	       	</ul>   
-			<div class="collapse navbar-collapse" id="navbarResponsive">
+           </ul>
+           <ul class="navbar-nav mr-auto"> 
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sesión</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="login.jsp">Iniciar sesión</a>
+              <a class="dropdown-item" href="alta.jsp"><i class="fas fa-user-plus"></i> Alta nuevo usuario</a>
+            </div>
+         	 </li>
+          </ul>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
 				<!-- usuario logeado -->
 			    <c:if test="${not empty sessionScope.usuario}">
 		    		<ul class="navbar-nav mr-auto">
@@ -51,6 +41,5 @@
 				    </form>
 				</c:if>
 	  		</div>
-       </div>
-   </div>
- </nav>
+        </div>
+      </nav>

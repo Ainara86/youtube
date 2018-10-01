@@ -72,7 +72,7 @@
 			    </div>
 			  </div>
 			</div>
-				
+
 				<hr>
 				<h4 class="my-4">Videos Visualizados</h4>
 				<ul class="list-group">
@@ -86,9 +86,12 @@
 					<c:if test="${empty usuario}">
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<p>
-									*Por favor <a href="#top">Inicia sesión</a> para guardar tus
-									video reproducidos
+									*Por favor <a href="login.jsp">Inicia sesión</a> para guardar tus
+									video reproducidos.<br>
+									
+									*Si no estas registrado <a href="alta.jsp">Date de alta</a>
 							</p>
+
 						</li>
 					</c:if>
 				</ul>

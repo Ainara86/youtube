@@ -5,42 +5,43 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ipartek.formacion.youtube.pojo.Usuario;
 import com.ipartek.formacion.youtube.pojo.Video;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class VideoDAO implements CrudAble<Video> {
+public class UsuarioDAO implements CrudAble<Usuario> {
 
-	private static VideoDAO INSTANCE = null;
+	private static UsuarioDAO INSTANCE = null;
 
-	private final String SQL_GET_ALL = "SELECT id, codigo, nombre FROM video ORDER BY id DESC LIMIT 1000;";
-	private final String SQL_GET_BY_ID = "SELECT id, codigo, nombre FROM video WHERE id = ?;";
-	private final String SQL_UPDATE = "UPDATE video SET codigo = ?, nombre = ? WHERE id = ?;";
-	private final String SQL_DELETE = "DELETE FROM video WHERE id=?;";
-	private final String SQL_INSERT = "INSERT INTO video (codigo, nombre) VALUES (? , ?);";
+	private final String SQL_GET_ALL = "SELECT id, nombre, password, rol FROM usuario ORDER BY id DESC LIMIT 1000;";
+	private final String SQL_GET_BY_ID = "SELECT id, nombre, password, rol FROM usuario WHERE id = ?;";
+	private final String SQL_UPDATE = "UPDATE usuario SET nombre = ?, password = ? WHERE id = ?;";
+	private final String SQL_DELETE = "DELETE FROM usuario WHERE id=?;";
+	private final String SQL_INSERT = "INSERT INTO usuario (nombre, password) VALUES (? , ?);";
 
-	private VideoDAO() {
+	private UsuarioDAO() {
 		super();
 	}
 
-	public static synchronized VideoDAO getInstance() {
+	public static synchronized UsuarioDAO getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new VideoDAO();
+			INSTANCE = new UsuarioDAO();
 		}
 		return INSTANCE;
 	}
 
 	@Override
-	public boolean insert(Video pojo) {
+	public boolean insert(Usuario pojo) {
 		boolean resul = false;
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
 
-			ps.setString(1, pojo.getCodigo());
-			ps.setString(2, pojo.getNombre());
+			ps.setString(1, pojo.getNombre());
+			ps.setString(2, pojo.getPass());
 
 			int affectedRows = ps.executeUpdate();
 			if (affectedRows == 1) {
@@ -62,27 +63,28 @@ public class VideoDAO implements CrudAble<Video> {
 	}
 
 	@Override
-	public List<Video> getAll() {
+	public List<Usuario> getAll() {
 
-		ArrayList<Video> videos = new ArrayList<Video>();
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = ps.executeQuery();) {
 
 			while (rs.next()) {
-				videos.add(rowMapper(rs));
+				usuarios.add(rowMapper(rs));
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return videos;
+		return usuarios;
 	}
-
+	
+	
 	@Override
-	public Video getById(String id) {
-		Video video = null;
+	public Usuario getById(String id) {
+		Usuario usuario = null;
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_GET_BY_ID);) {
 
@@ -90,7 +92,7 @@ public class VideoDAO implements CrudAble<Video> {
 
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					video = rowMapper(rs);
+					usuario = rowMapper(rs);
 				}
 
 			}
@@ -99,18 +101,19 @@ public class VideoDAO implements CrudAble<Video> {
 			e.printStackTrace();
 		}
 
-		return video;
+		return usuario;
 	}
 
 	@Override
-	public boolean update(Video pojo) {
+	public boolean update(Usuario pojo) {
 		boolean resul = false;
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_UPDATE);) {
 
-			ps.setString(1, pojo.getCodigo());
-			ps.setString(2, pojo.getNombre());
+			
+			ps.setString(1, pojo.getNombre());
+			ps.setString(2, pojo.getPass());
 			ps.setLong(3, pojo.getId());
 
 			int affectedRows = ps.executeUpdate();
@@ -143,15 +146,14 @@ public class VideoDAO implements CrudAble<Video> {
 		return resul;
 	}
 
-	private Video rowMapper(ResultSet rs) throws Exception {
-		Video video = new Video();
+	private Usuario rowMapper(ResultSet rs) throws Exception {
+		Usuario usuario = new Usuario();
 		if (rs != null) {
-			video.setId(rs.getLong("id"));
-			video.setCodigo(rs.getString("codigo"));
-			video.setNombre(rs.getString("nombre"));
+			usuario.setId(rs.getLong("id"));
+			usuario.setNombre(rs.getString("nombre"));
+			usuario.setPass(rs.getString("pass"));
 		}
-		return video;
+		return usuario;
 	}
-
 
 }

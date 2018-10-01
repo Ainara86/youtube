@@ -2,6 +2,7 @@ package com.ipartek.formacion.youtube.controller;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -13,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ipartek.formacion.youtube.model.UsuarioDAO;
 import com.ipartek.formacion.youtube.pojo.Alert;
 import com.ipartek.formacion.youtube.pojo.Usuario;
+import com.ipartek.formacion.youtube.pojo.Video;
 
 /**
  * Servlet implementation class LoginController
@@ -22,7 +25,9 @@ import com.ipartek.formacion.youtube.pojo.Usuario;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private static UsuarioDAO dao;
+	private ArrayList<Usuario> usuarios;	
+	private Usuario u;   
     
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

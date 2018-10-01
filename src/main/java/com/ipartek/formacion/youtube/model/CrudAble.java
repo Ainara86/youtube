@@ -1,6 +1,9 @@
 package com.ipartek.formacion.youtube.model;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import com.ipartek.formacion.youtube.pojo.Usuario;
 
 /**
  * Interfaz para especificar los metodos de <b>CRUD</b>:
@@ -38,5 +41,7 @@ public interface CrudAble<P> {
 	//Delete
 
 	boolean delete(String id);
+
+
 
 }
