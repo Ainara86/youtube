@@ -21,16 +21,16 @@
                         
                         <div class="form-group">
                             <label for="text" class="required">Nombre usuario</label>
-                            <input name="nombre" type="text" class="form-control" id="nombre" autofocus required placeholder="Longitud máxima de 20" />
+                            <input name="nombre" type="text" class="form-control" id="nombre" autofocus required placeholder="Longitud máxima de 50" pattern="{3,50}"/>
                         </div>
                                     
                         <div class="form-group">
                             <label for="pass" class="required">Contraseña</label>
-                            <input name="password" type="password" class="form-control" id="password" minlength="8" maxlength="50" required placeholder="Contraseña del usuario (8 a 20 caracteres)" />
+                            <input name="password" type="password" class="form-control" id="password" required placeholder="Contraseña del usuario (8 a 20 caracteres)" pattern="{8,20}"/>
                         </div>
                         <div class="form-group">
                             <label for="pass" class="required">Confirma contraseña</label>
-                            <input name="password2" type="password" class="form-control" id="password2" minlength="8" maxlength="50" required placeholder="Contraseña del usuario (8 a 20 caracteres)" />
+                            <input name="password2" type="password" class="form-control" id="password2" required placeholder="Contraseña del usuario (8 a 20 caracteres)" pattern="{8,20}" />
                         </div>
                                     
                         <button type="submit" class="btn btn-outline-primary btn-block">Registrarse</button>

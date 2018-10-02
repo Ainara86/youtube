@@ -2,7 +2,6 @@ package com.ipartek.formacion.youtube.controller;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import com.ipartek.formacion.youtube.model.UsuarioDAO;
 import com.ipartek.formacion.youtube.pojo.Alert;
 import com.ipartek.formacion.youtube.pojo.Usuario;
-import com.ipartek.formacion.youtube.pojo.Video;
 
 /**
  * Servlet implementation class LoginController
@@ -25,9 +23,11 @@ import com.ipartek.formacion.youtube.pojo.Video;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static UsuarioDAO dao;
-	private ArrayList<Usuario> usuarios;	
-	private Usuario u;   
+	private static UsuarioDAO daoUsuario;
+	
+	private static final String VIEW_INICIO_ADMIN = "/backoffice/inicio";
+	private static final String VIEW_INICIO_USER = "/inicio";
+	 
     
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -47,6 +47,7 @@ public class LoginController extends HttpServlet {
 		
 		Alert alert = new Alert();
 		HttpSession session = request.getSession();
+		String view = VIEW_INICIO_USER;
 		
 		try {
 			
@@ -59,23 +60,26 @@ public class LoginController extends HttpServlet {
 			//recoger parametros
 			String usuarioNombre = request.getParameter("usuario");
 			String pass = request.getParameter("pass");
-				
-			//comprobar usuario TODO contra BBDD
-			if ( "admin".equals(pass) && "admin".equals(usuarioNombre) || 
-				  "pepe".equals(pass) && "pepe".equals(usuarioNombre)  ||
-				  "manoli".equals(pass) && "manoli".equals(usuarioNombre) )  {
+			Usuario u = new Usuario(usuarioNombre, pass);
+			daoUsuario = UsuarioDAO.getInstance();	
+			
+			 
+			
+			if (  daoUsuario.login(u) != null ) {
 				
 				alert.setTexto(MessageFormat.format(idiomas.getString("msj.bienvenida"), usuarioNombre) );
 				alert.setTipo(Alert.PRIMARY);
 				
-				//guardar Usuario en session
-				Usuario u = new Usuario(usuarioNombre, pass);
-				
+				//guardar Usuario en session				
 				session.setAttribute("usuario", u);
-				session.setMaxInactiveInterval(60*5); // 5min
-				
+				session.setMaxInactiveInterval(60*5); // 5min				
 				
 				gestionarCookies(request, response, u);
+				
+				if ( u.getRol() == Usuario.ROL_ADMIN ) {
+					view = VIEW_INICIO_ADMIN;
+				}
+				
 				
 			}else{
 				
@@ -86,9 +90,8 @@ public class LoginController extends HttpServlet {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			session.setAttribute("alert", alert);
-			//request.getRequestDispatcher("home.jsp").forward(request, response);
-			response.sendRedirect(request.getContextPath() + "/inicio" ); 
+			session.setAttribute("alert", alert);			
+			response.sendRedirect(request.getContextPath() + view ); 
 		}
 		
 		

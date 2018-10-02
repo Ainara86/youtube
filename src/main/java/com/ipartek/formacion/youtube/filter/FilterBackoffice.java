@@ -52,6 +52,8 @@ public class FilterBackoffice implements Filter {
 				// siempre que queremos que la request continue.
 				chain.doFilter(request, response);
 			} else {
+				
+				//TODO comprobar ROL del usuario
 				informacionCliente(req);
 
 				// usuario no logeado

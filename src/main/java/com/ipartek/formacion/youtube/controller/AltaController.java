@@ -20,64 +20,73 @@ import com.ipartek.formacion.youtube.pojo.Usuario;
  */
 @WebServlet("/alta")
 public class AltaController extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
+
+	private static final String VIEW_REGISTRO = "/alta.jsp";
+	private static final String HOME_CONTROLLER = "/inicio";
+
 	private static UsuarioDAO dao;
-	private ArrayList<Usuario> usuarios;	
+	private ArrayList<Usuario> usuarios;
 	private Usuario usuario;
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doProcess(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doProcess(request, response);
 	}
 
 	private void doProcess(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Alert alert = new Alert();
+
+		Alert alert = null;
+		String view = VIEW_REGISTRO;
+
 		HttpSession session = request.getSession();
 		dao = UsuarioDAO.getInstance();
-		
-		
+
 		try {
-			
-			//recoger parametros
+
+			// recoger parametros
 			String nombre = request.getParameter("nombre");
 			String password = request.getParameter("password");
-			String password2 = request.getParameter("password2");	
-			
-			if(password.equals(password2)){  		
-				
+			String password2 = request.getParameter("password2");
+
+			// TODO comprobar si existe el usuario
+			if (password.equals(password2)) {
 				Usuario u = new Usuario(nombre, password);
-				if ( dao.insert(u) ) {
+				if (dao.insert(u)) {
+					view = HOME_CONTROLLER;
 					alert = new Alert(Alert.SUCCESS, "Gracias por registrarse");
-				}else {
+				} else {
 					alert = new Alert(Alert.WARNING, "ERROR, no se pudo dar de alta");
 				}
-			}else {
+			} else {
 				alert = new Alert(Alert.WARNING, "ERROR, la contraseña no coincide");
 			}
-				
-			
-			//pedir listado			
+
+			// pedir listado
 			usuarios = (ArrayList<Usuario>) dao.getAll();
-			
-			
-			
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+			alert = new Alert();
+		} finally {
 			session.setAttribute("alert", alert);
-			//request.getRequestDispatcher("home.jsp").forward(request, response);
-			response.sendRedirect(request.getContextPath() + "/alta.jsp" ); 
+			response.sendRedirect(request.getContextPath() + view);
 		}
-		
+
 	}
 
 }

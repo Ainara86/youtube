@@ -1,152 +1,125 @@
-<%@page import="com.ipartek.formacion.youtube.pojo.Usuario"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.HashMap"%>
+<%@include file="includes/header.jsp" %>
 
-<c:set var="idioma" value="en_EN" />
-<fmt:setLocale value="${idioma}" />
-<fmt:setBundle basename="idiomas" /> 
+    <div id="wrapper">
 
-<!DOCTYPE html>
-<html lang="${idioma}">
-	<head>
-		<!-- Comenza todas las URLs desde el href indicado -->
-		<base href="<%=request.getContextPath()%>/">
-		
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		
-		<title>Youtube Video Play List</title>
-		
-		<link rel="stylesheet"
-			href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-			integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-			crossorigin="anonymous">
-		
-		<!-- Bootstrap core CSS -->
-		<link
-			href="https://blackrockdigital.github.io/startbootstrap-shop-item/vendor/bootstrap/css/bootstrap.min.css"
-			rel="stylesheet">
-		
-		<!-- Custom styles for this template -->
-		<link
-			href="https://blackrockdigital.github.io/startbootstrap-shop-item/css/shop-item.css"
-			rel="stylesheet">
-		
-		<link href="css/styles.css" rel="stylesheet"></link>
-	
-	</head>
-	
-	<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-	<div class="container">
-		<a class="navbar-brand" href="#"><img src="images/log.png" class="logo"></a>
-     	
-		<div class="collapse navbar-collapse" id="navbarResponsive">
-	      
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<!-- usuario logeado -->
-			    
-		    		<ul class="navbar-nav mr-auto">
-		      			<li class="nav-item active">
-		        			<a class="nav-link"><i class="fas fa-user">${usuario.nombre}</i></a>
-		      			</li>
-		      			<li class="nav-item">
-		        			<a class="nav-link" href="backoffice/index.jsp">Acceder Backoffice</a>
-		      			</li>
-		      			<li class="nav-item">
-		        			<a class="nav-link disabled" href="logout">Cerrar Session</a>
-		      			</li>
-		    		</ul>
+        <%@include file="includes/navbar.jsp" %>
 
-	  		</div>
-       </div>
-   </div>
- </nav>
-	
-		<!-- Page Content -->
-		<div class="container">
-	
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Inicio</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!-- CARDS -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-comments fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${videos}</div>
+                                    <div>VIDEOS</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">Ver detalles</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">${usuarios}</div>
+                                    <div>USUARIOS</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">Ver detalles</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">124</div>
+                                    <div>ROLES</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">Ver detalle</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-support fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">13</div>
+                                    <div>OTRA COSA</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">Ver detalle</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+           <!-- /CARDS -->
+        </div>
+        <!-- /#page-wrapper -->
 
-	
-	
-			<div class="row">
-	
-				<div class="col-lg-3">
-					<h1>ESTAMOS EN EL BACKOFFICE</h1>
-*solo pueden entrar usuarios logeados<br>
+    </div>
+    <!-- /#wrapper -->
 
-	<%
-		Usuario usuario = (Usuario)session.getAttribute("usuario");
-		if( usuario == null){
-	%>
-			<p style="color:red">Usuario nulo, se ha saltado el login</p>
-		<%
-		}else{
-		%>
-			<p>Usuario: <%=usuario.getNombre()%></p>
-		<%
-		}
-		%>
-<img src="http://denkaidigital.denkaidigital.netdna-cdn.com/wp-content/uploads/2018/02/back-office-outsourcing-services.png">
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
 
-<h2>Listado usuarios conectados</h2>
-<%
-	HashMap<String, Usuario> usuariosConectados = (HashMap<String, Usuario>)application.getAttribute("uConectados");
-	for( HashMap.Entry<String,Usuario> uConectado : usuariosConectados.entrySet() ){
-		
-	    %>
-	    	<li><%=uConectado.getValue().getNombre()%></li>
-	    <%
-	
-	}
-%>
-	
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
-	
-				</div> <!-- /.col-lg-3 -->
-	
-				<div class="col-lg-9">
-	
-					<div class="card mt-4">
-	onrnjsgejnorsenoregnogreno
-					</div><!-- fin div card mt-4-->
-	
-					
-	
-				</div> <!-- /.col-lg-9 -->
-	
-			</div> <!-- div row -->
-	
-		</div> <!-- /.container -->
-	
-		<!-- Footer -->
-		<footer class="py-5 bg-dark">
-			<div class="container">
-				<p class="m-0 text-center text-white">Copyright &copy; Your
-					Website 2017</p>
-			</div>
-			<!-- /.container -->
-		</footer>
-	
-		<!-- Bootstrap core JavaScript -->
-		<script
-			src="https://blackrockdigital.github.io/startbootstrap-shop-item/vendor/jquery/jquery.min.js"></script>
-		<script
-			src="https://blackrockdigital.github.io/startbootstrap-shop-item/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	
-	</body>
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+</body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-

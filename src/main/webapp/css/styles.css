@@ -49,13 +49,11 @@ body{
 .nav-item a{
 	padding-left: 5px;
 }
-.nav-item img{
+.navbar-brand img{
 	width:40px;
-	height:30px;
+	height:35px;
 }
-.navbar-nav {
-    padding-right: 58rem;
-}
+
 
 
 .form-inline .usuario{
