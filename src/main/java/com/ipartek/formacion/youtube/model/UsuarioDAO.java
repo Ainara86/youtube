@@ -106,19 +106,19 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 	}
 
 	@Override
-	public Usuario getById(String id) {
+	public Usuario getById(String i) {
 		Usuario usuario = null;
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_GET_BY_ID);) {
 
-			ps.setString(1, id);
+			ps.setString(1, i);
 
-			/*
-			 * try (ResultSet rs = ps.executeQuery()) { while (rs.next()) { usuario =
-			 * rowMapper(rs); }
-			 * 
-			 * }
-			 */
+			
+			 try (ResultSet rs = ps.executeQuery()) {
+				 while (rs.next()) { 
+					 usuario = rowMapper(rs,usuario); 
+				}
+			 }
 
 		} catch (Exception e) {
 			e.printStackTrace();
