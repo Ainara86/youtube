@@ -34,7 +34,7 @@
 				value="${(usuario.id==-1)?'Crear usuario': 'Modificar usuario' }"
 				class="btn btn-primary btn-block">
 			<c:if test="${(usuario.id>0)}">
-				<a href="usuario?id=${usuario.id}&op=45" onclick="confirmar(event)" class="btn btn-danger btn-block">Eliminar(confirmar
+				<a href="usuario?id=${usuario.id}&op=1" onclick="confirmar(event)" class="btn btn-danger btn-block">Eliminar(confirmar
 					modal)</a>
 			</c:if>
 		</form>

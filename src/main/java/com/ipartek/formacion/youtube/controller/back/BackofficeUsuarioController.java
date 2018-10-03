@@ -49,14 +49,12 @@ public class BackofficeUsuarioController extends HttpServlet {
 			throws ServletException, IOException {
 		Alert alert = null;
 		try {
-			
+
 			String id = request.getParameter("id");
-			
-			
-			//listado videos			
+
+			// listado videos
 			usuarios = (ArrayList<Usuario>) daoUsuario.getAll();
-			
-			
+
 			if (id == null) {
 				request.setAttribute("usuarios", usuarios);
 				request.getRequestDispatcher("usuarios/index.jsp").forward(request, response);
@@ -77,14 +75,6 @@ public class BackofficeUsuarioController extends HttpServlet {
 			request.setAttribute("alert", alert);
 		}
 
-
-		
-		
-		
-		//ArrayList<Usuario> usuarios = getMockUsers();
-
-		
-
 	}
 
 	/**
@@ -94,21 +84,56 @@ public class BackofficeUsuarioController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		Alert alert = null;
+
 		// recoger parametros del formulario
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String password = request.getParameter("password");
 		String rol = request.getParameter("rol");
+		
+		int op = Integer.parseInt(request.getParameter("op"));
 
-		// TODO comprobar si es CREAR o MODIFICAR y llamar DAO
+		// TODO comprobar si es CREAR
 		Usuario usuario = new Usuario();
 		usuario.setId(Long.parseLong(id));
 		usuario.setNombre(nombre);
 		usuario.setPassword(password);
 		usuario.setRol(Integer.parseInt(rol));
 
-		request.setAttribute("usuario", usuario);
-		request.getRequestDispatcher("usuarios/form.jsp").forward(request, response);
+		if (Integer.parseInt(id) < 0) {
+			usuario = new Usuario(nombre, password);
+			if (daoUsuario.insert(usuario)) {
+				alert = new Alert(Alert.SUCCESS, "Gracias por subir tu Video");
+			} else {
+				alert = new Alert(Alert.WARNING,
+						"ERROR, no se pudo crear el video, por favor asegurate que no este duplicado el Video.");
+			}
+			request.setAttribute("usuario", usuario);
+			request.getRequestDispatcher("usuarios/form.jsp").forward(request, response);
+		} else {
+			// MODIFICAR y llamar DAO
+			Usuario u = daoUsuario.getById(id);
+			u.setNombre(nombre);
+
+			if (daoUsuario.update(u)) {
+				alert = new Alert(Alert.SUCCESS, "Video Modificado");
+			} else {
+				alert = new Alert();
+			}
+
+			request.setAttribute("usuario", usuario);
+			request.getRequestDispatcher("usuarios").forward(request, response);
+		}
+		if(op == 1) {
+			if ( daoUsuario.delete(id)) {
+				alert = new Alert(Alert.SUCCESS, "Usuario Eliminado correctamente");
+				request.setAttribute("usuario", usuario);
+				request.getRequestDispatcher("usuarios").forward(request, response);
+			}else {
+				alert = new Alert();
+			}
+		}
 
 	}
 

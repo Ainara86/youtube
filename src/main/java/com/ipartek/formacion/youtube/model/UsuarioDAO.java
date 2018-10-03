@@ -150,22 +150,6 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 		return resul;
 	}
 
-	@Override
-	public boolean delete(long l) {
-		boolean resul = false;
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_DELETE);) {
-
-			ps.setLong(1, l);
-			if (ps.executeUpdate() == 1) {
-				resul = true;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return resul;
-	}
 
 	private Usuario rowMapper(ResultSet rs, Usuario u) throws Exception {
 
@@ -181,5 +165,23 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 		}
 		return u;
 	}
+
+	public boolean delete(String id) {
+		boolean resul = false;
+		try (Connection con = ConnectionManager.getConnection();
+			 PreparedStatement ps = con.prepareStatement(SQL_DELETE);){
+			
+			ps.setString(1, id);			
+			if ( ps.executeUpdate() == 1 ) {
+				resul = true;
+			}			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
+	}
+
+	
 
 }

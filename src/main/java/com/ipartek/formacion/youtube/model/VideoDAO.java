@@ -127,12 +127,12 @@ public class VideoDAO implements CrudAble<Video> {
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(String id) {
 		boolean resul = false;
 		try (Connection con = ConnectionManager.getConnection();
 			 PreparedStatement ps = con.prepareStatement(SQL_DELETE);){
 			
-			ps.setLong(1, id);			
+			ps.setString(1, id);			
 			if ( ps.executeUpdate() == 1 ) {
 				resul = true;
 			}			

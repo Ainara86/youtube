@@ -40,7 +40,7 @@ public interface CrudAble<P> {
 	
 	//Delete
 
-	boolean delete(long l);
+	boolean delete(String l);
 
 
 
