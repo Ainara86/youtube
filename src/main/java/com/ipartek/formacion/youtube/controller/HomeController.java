@@ -96,7 +96,7 @@ public class HomeController extends HttpServlet {
 			
 			//eliminar ?			
 			if ( op != null && OP_ELIMINAR.equals(op) ) {
-				if ( dao.delete(id) ) {
+				if ( dao.delete(Long.parseLong(id) )) {
 					alert = new Alert(Alert.SUCCESS, "Video Eliminado correctamente");
 				}else {
 					alert = new Alert();

@@ -6,30 +6,39 @@
 
 
 <!DOCTYPE html>
-<html lang="es_ES">
+<html lang="es">
 
-  <head>
+<head>
 
-	<!-- Etiqueta HTML para comenzar las urls desde href indicado. -->
-	<base href="<%=request.getContextPath()%>/">
+	<base href="<%=request.getContextPath()%>/backoffice/">
 	
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Youtube Playlist</title>
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
-	<!-- Bootstrap CSS -->
-    <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- FontAwesome CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom CSS -->
-	<link href="css/style.css" rel="stylesheet" type="text/css"/>
-	<link href="backoffice/css/sb-admin-2.css" rel="stylesheet" type="text/css"/>
-  </head>
+    <link href="css/sb-admin-2.css" rel="stylesheet">
 
-  <body>
+   
+    <!-- Custom Fonts -->
+    <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet" type="text/css">
+   
+   <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+   
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">

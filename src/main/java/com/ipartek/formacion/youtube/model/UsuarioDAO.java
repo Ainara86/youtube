@@ -151,12 +151,12 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 	}
 
 	@Override
-	public boolean delete(String id) {
+	public boolean delete(long l) {
 		boolean resul = false;
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_DELETE);) {
 
-			ps.setString(1, id);
+			ps.setLong(1, l);
 			if (ps.executeUpdate() == 1) {
 				resul = true;
 			}
