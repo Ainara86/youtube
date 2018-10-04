@@ -1,7 +1,9 @@
+<%@page import="com.ipartek.formacion.youtube.controller.back.BackofficeUsuarioController"%>
 <%@page import="com.ipartek.formacion.youtube.pojo.Usuario"%>
 <%@ include file="../includes/header.jsp"%>
 <%@ include file="../includes/navbar.jsp"%>
 <div id="page-wrapper">
+<%@ include file="../includes/alert.jsp"%>
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">${(usuario.id==-1)?'Crear usuario': usuario.nombre }</h1>
@@ -26,16 +28,18 @@
 			<div class="form-group">
 				<label for="rol">Rol</label>
 				<select name="rol" class="form-control">
-					<option value="${Usuario.ROL_USER}">Normal</option>
-					<option value="${Usuario.ROL_ADMIN}">Administrador</option>
+					<option value="${Usuario.ROL_USER}"  ${(usuario.rol == Usuario.ROL_USER)?'selected':'' }>Normal</option>
+			   		<option value="${Usuario.ROL_ADMIN}"  ${(usuario.rol == Usuario.ROL_ADMIN)?'selected':'' }  >Administrador</option>
 				</select>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" name="op" id="op" value="2" />
 			</div>
 			<input type="submit"
 				value="${(usuario.id==-1)?'Crear usuario': 'Modificar usuario' }"
 				class="btn btn-primary btn-block">
-			<c:if test="${(usuario.id>0)}">
-				<a href="usuario?id=${usuario.id}&op=1" onclick="confirmar(event)" class="btn btn-danger btn-block">Eliminar(confirmar
-					modal)</a>
+			<c:if test="${usuario.id > 0}">
+      				<a href="usuarios?id=${usuario.id}&op=3" onclick="confirmar(event)" class="btn btn-danger btn-block">Eliminar(Modal)</a>
 			</c:if>
 		</form>
 		

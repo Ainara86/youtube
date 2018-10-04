@@ -16,7 +16,7 @@ public class Usuario {
 		this.id = -1;
 		this.nombre = "admin";
 		this.password = "admin";
-		this.rol = ROL_USER;
+		//this.rol = ROL_USER;
 	}
 
 		
@@ -25,6 +25,7 @@ public class Usuario {
 		this.id = -1;
 		this.nombre = nombre.trim();
 		this.password = password.trim();
+		//this.rol = rol;
 	}
 	
 	public long getId() {

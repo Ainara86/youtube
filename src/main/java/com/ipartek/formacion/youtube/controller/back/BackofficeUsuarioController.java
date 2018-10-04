@@ -9,23 +9,35 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.ipartek.formacion.youtube.model.UsuarioDAO;
-import com.ipartek.formacion.youtube.model.VideoDAO;
 import com.ipartek.formacion.youtube.pojo.Alert;
 import com.ipartek.formacion.youtube.pojo.Usuario;
-import com.ipartek.formacion.youtube.pojo.Video;
 
 /**
  * Servlet implementation class BackofficeUsuarioController
  */
 @WebServlet("/backoffice/usuarios")
 public class BackofficeUsuarioController extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
-	private static UsuarioDAO daoUsuario;
-	private ArrayList<Usuario> usuarios;
-	private Usuario usuarioInicio;
+	private static UsuarioDAO daoUsuario = null;
+
+	public static final String OP_LISTAR = "1";
+	public static final String OP_GUARDAR = "2"; // insert id == -1 o update id > 0
+	public static final String OP_ELIMINAR = "3";
+	public static final String OP_IR_FORMULARIO = "4";
+
+	private static final String VIEW_LISTADO = "usuarios/index.jsp";
+	private static final String VIEW_FORMULARIO = "usuarios/form.jsp";
+	private String view;
+	private Alert alert;
+
+	private String op; // operacion a realizar
+	private String id;
+	private String nombre;
+	private String password;
+	private String rol;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -47,25 +59,40 @@ public class BackofficeUsuarioController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Alert alert = null;
+		doProcess(request, response);
+		/*Alert alert = null;
 		try {
 
+			ArrayList<Usuario> usuarios = new ArrayList<>();
+
 			String id = request.getParameter("id");
+			String op = request.getParameter("op");
 
-			// listado videos
-			usuarios = (ArrayList<Usuario>) daoUsuario.getAll();
+			if (id != null && op != null && op.equals(OP_ELIMINAR)) { // ELIMINAR
 
-			if (id == null) {
+				daoUsuario.delete(id);
+
+				usuarios = (ArrayList<Usuario>) daoUsuario.getAll();
 				request.setAttribute("usuarios", usuarios);
 				request.getRequestDispatcher("usuarios/index.jsp").forward(request, response);
+
 			} else {
 
-				Usuario usuario = new Usuario();
-				if (Integer.parseInt(id) > 0) {
-					usuario = daoUsuario.getById(id);
+				if (id == null) { // LISTADO
+					usuarios = (ArrayList<Usuario>) daoUsuario.getAll();
+					request.setAttribute("usuarios", usuarios);
+					request.setAttribute("alert", new Alert(Alert.SUCCESS, "Yeaaaaa"));
+					request.getRequestDispatcher("usuarios/index.jsp").forward(request, response);
+
+				} else { // DETALLE
+
+					Usuario usuario = new Usuario();
+					if (Integer.parseInt(id) > 0) {
+						usuario = daoUsuario.getById(id);
+					}
+					request.setAttribute("usuario", usuario);
+					request.getRequestDispatcher("usuarios/form.jsp").forward(request, response);
 				}
-				request.setAttribute("usuario", usuario);
-				request.getRequestDispatcher("usuarios/form.jsp").forward(request, response);
 			}
 
 		} catch (Exception e) {
@@ -73,7 +100,7 @@ public class BackofficeUsuarioController extends HttpServlet {
 			alert = new Alert();
 		} finally {
 			request.setAttribute("alert", alert);
-		}
+		}*/
 
 	}
 
@@ -83,72 +110,139 @@ public class BackofficeUsuarioController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		doProcess(request, response);
+		/*Alert alert = null;
 
-		Alert alert = null;
-
-		// recoger parametros del formulario
-		String id = request.getParameter("id");
-		String nombre = request.getParameter("nombre");
-		String password = request.getParameter("password");
-		String rol = request.getParameter("rol");
 		
-		int op = Integer.parseInt(request.getParameter("op"));
 
-		// TODO comprobar si es CREAR
 		Usuario usuario = new Usuario();
 		usuario.setId(Long.parseLong(id));
 		usuario.setNombre(nombre);
 		usuario.setPassword(password);
 		usuario.setRol(Integer.parseInt(rol));
 
-		if (Integer.parseInt(id) < 0) {
-			usuario = new Usuario(nombre, password);
-			if (daoUsuario.insert(usuario)) {
-				alert = new Alert(Alert.SUCCESS, "Gracias por subir tu Video");
-			} else {
-				alert = new Alert(Alert.WARNING,
-						"ERROR, no se pudo crear el video, por favor asegurate que no este duplicado el Video.");
-			}
-			request.setAttribute("usuario", usuario);
-			request.getRequestDispatcher("usuarios/form.jsp").forward(request, response);
-		} else {
-			// MODIFICAR y llamar DAO
-			Usuario u = daoUsuario.getById(id);
-			u.setNombre(nombre);
-
-			if (daoUsuario.update(u)) {
-				alert = new Alert(Alert.SUCCESS, "Video Modificado");
-			} else {
-				alert = new Alert();
-			}
-
-			request.setAttribute("usuario", usuario);
-			request.getRequestDispatcher("usuarios").forward(request, response);
+		if (usuario.getId() > 0) { // MODIFICAR
+			daoUsuario.update(usuario);
+		} else { // INSERT
+			daoUsuario.insert(usuario);
 		}
-		if(op == 1) {
-			if ( daoUsuario.delete(id)) {
-				alert = new Alert(Alert.SUCCESS, "Usuario Eliminado correctamente");
-				request.setAttribute("usuario", usuario);
-				request.getRequestDispatcher("usuarios").forward(request, response);
-			}else {
-				alert = new Alert();
+
+		request.setAttribute("usuario", usuario);
+		request.getRequestDispatcher("usuarios/form.jsp").forward(request, response);*/
+
+	}
+
+	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		try {
+
+			alert = new Alert();
+
+			getParameters(request);
+
+			switch (op) {
+			case OP_ELIMINAR:
+				eliminar(request);
+				break;
+			case OP_IR_FORMULARIO:
+				irFormulario(request);
+				break;
+			case OP_GUARDAR:
+				guardar(request);
+				break;
+
+			default: // LISTAR
+				listar(request);
+				break;
 			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			view = VIEW_LISTADO;
+			alert = new Alert();
+		} finally {
+			request.setAttribute("alert", alert);
+			request.getRequestDispatcher(view).forward(request, response);
+
+		}
+	}
+
+	private void getParameters(HttpServletRequest request) {
+		op = ( request.getParameter("op") != null ) ? request.getParameter("op") : OP_LISTAR;
+		id = request.getParameter("id");
+		nombre = request.getParameter("nombre");
+		password = request.getParameter("password");
+		rol = request.getParameter("rol");
+
+	}
+
+	private void listar(HttpServletRequest request) {
+		alert = null;
+		view = VIEW_LISTADO;
+		request.setAttribute("usuarios", daoUsuario.getAll());
+	}
+
+	private void guardar(HttpServletRequest request) {
+		alert=null;
+		
+		Usuario usuario = new Usuario();
+		usuario.setId(Long.parseLong(id));
+		usuario.setNombre(nombre);
+		usuario.setPassword(password);
+		usuario.setRol(Integer.parseInt(rol));
+
+		if (usuario.getId() > 0) { // MODIFICAR
+			usuario.setId(Long.parseLong(id));
+			usuario.setNombre(nombre);
+			usuario.setPassword(password);
+			usuario.setRol(Integer.parseInt(rol));
+			daoUsuario.update(usuario);
+			
+		} else { // INSERT
+			daoUsuario.insert(usuario);
+		}		
+		
+		request.setAttribute("usuario", daoUsuario.getById(id));
+		view=VIEW_FORMULARIO;
+		
+		
+	}
+
+	private void irFormulario(HttpServletRequest request) {
+		alert = null;
+		ArrayList<Usuario> usuarios = new ArrayList<>();
+		view=VIEW_FORMULARIO;
+		
+		if (id == null) { // LISTADO
+			usuarios = (ArrayList<Usuario>) daoUsuario.getAll();
+			request.setAttribute("usuarios", usuarios);
+			request.setAttribute("alert", new Alert(Alert.SUCCESS, "Yeaaaaa"));
+			view=VIEW_LISTADO;
+
+		} else { // DETALLE
+
+			Usuario usuario = new Usuario();
+			if (Integer.parseInt(id) > 0) {
+				usuario = daoUsuario.getById(id);
+			}
+			request.setAttribute("usuario", usuario);
+			view=VIEW_FORMULARIO;
 		}
 
 	}
 
-	private ArrayList<Usuario> getMockUsers() {
-		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-		Usuario u = null;
-		for (int i = 1; i <= 100; i++) {
-			u = new Usuario("nombre" + i, "123456");
-			if (i == 1) {
-				u.setRol(Usuario.ROL_ADMIN);
-			}
-			u.setId(i);
-			usuarios.add(u);
-		}
-		return usuarios;
+	private void eliminar(HttpServletRequest request) {
+		alert=null;
+		
+		view=VIEW_FORMULARIO;
+
+		daoUsuario.delete(id);
+		request.setAttribute("usuarios", daoUsuario.getAll());
+		view=VIEW_LISTADO;
+		//TODO alerts
+		//request.setAttribute("alert", new Alert(Alert.SECONDARY, "Usuario eliminado con exito."));
+
 	}
 
 }
