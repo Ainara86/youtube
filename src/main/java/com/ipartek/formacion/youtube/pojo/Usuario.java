@@ -14,9 +14,9 @@ public class Usuario {
 	public Usuario() {
 		super();
 		this.id = -1;
-		this.nombre = "admin";
-		this.password = "admin";
-		//this.rol = ROL_USER;
+		this.nombre = "";
+		this.password = "";
+		this.rol = ROL_USER;
 	}
 
 		

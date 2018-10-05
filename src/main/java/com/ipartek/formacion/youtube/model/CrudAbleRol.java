@@ -2,6 +2,7 @@ package com.ipartek.formacion.youtube.model;
 
 import java.util.List;
 
+import com.ipartek.formacion.youtube.pojo.Rol;
 import com.ipartek.formacion.youtube.pojo.Usuario;
 
 /**
@@ -16,7 +17,7 @@ import com.ipartek.formacion.youtube.pojo.Usuario;
  * @author Curso
  *
  */
-public interface CrudAble<P> {
+public interface CrudAbleRol<P> {
 
 	// Create
 	boolean insert(P pojo) throws Exception;
@@ -35,13 +36,15 @@ public interface CrudAble<P> {
 	 * @param id
 	 * @return VideoYoutube si lo encuentra, null si no lo encuentra
 	 */
-	P getById(String id) throws Exception;
-
 	// Upadte
 	boolean update(P pojo) throws Exception;
 
 	// Delete
 
 	boolean delete(String l) throws Exception;
+
+	P getById(long id) throws Exception;
+
+	P getById(String id) throws Exception;
 
 }
