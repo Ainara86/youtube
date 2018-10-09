@@ -3,7 +3,6 @@ package com.ipartek.formacion.youtube.listener;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;

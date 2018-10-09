@@ -1,9 +1,7 @@
 package com.ipartek.formacion.youtube.filter;
 
 import java.io.IOException;
-import java.security.KeyStore.Entry;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.DispatcherType;

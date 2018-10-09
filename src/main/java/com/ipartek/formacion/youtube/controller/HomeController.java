@@ -23,8 +23,7 @@ import com.ipartek.formacion.youtube.pojo.Video;
  */
 @WebServlet("/inicio")
 public class HomeController extends HttpServlet {
-
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 	
 	public static final String OP_ELIMINAR = "1";
 	public static final String OP_MODIFICAR = "2";
@@ -57,6 +56,9 @@ public class HomeController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
+		System.out.println("Antes de realizar GET o POST");
+		
+		
 		//idiomas @see com.ipartek.formacion.youtube.filter.IdiomaFilter
 		HttpSession session = request.getSession();
 		String idioma = (String)session.getAttribute("idioma");		
@@ -70,11 +72,13 @@ public class HomeController extends HttpServlet {
 		request.setAttribute("videos", videos);
 		request.setAttribute("videoInicio", videoInicio);
 		
-		String playlist="";
-		for(int i=1; i<videos.size();i++) {
+		String playlist = "";
+		for (int i=0; i < videos.size(); i++) {
 			playlist += videos.get(i).getCodigo() + ",";
 		}
 		request.setAttribute("playlist", playlist);
+		
+		
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 		
 	}
@@ -96,7 +100,7 @@ public class HomeController extends HttpServlet {
 			
 			//eliminar ?			
 			if ( op != null && OP_ELIMINAR.equals(op) ) {
-				if ( dao.delete(id) ) {
+				if ( dao.delete( Long.parseLong(id) ) ) {
 					alert = new Alert(Alert.SUCCESS, "Video Eliminado correctamente");
 				}else {
 					alert = new Alert();
@@ -110,7 +114,7 @@ public class HomeController extends HttpServlet {
 			//video de inicio
 			videoInicio = new Video();
 			if ( id != null && !OP_ELIMINAR.equals(op) ) {
-				videoInicio = dao.getById(id);
+				videoInicio = dao.getById( Long.parseLong(id) );
 				
 				//guardar video reproducido si esta usuario en session
 				HttpSession session = request.getSession();
@@ -157,7 +161,7 @@ public class HomeController extends HttpServlet {
 			
 			if ( op != null && OP_MODIFICAR.equals(op)) {    // modificar
 				
-				Video v = dao.getById(id);
+				Video v = dao.getById( Long.parseLong(id) );
 				v.setNombre(nombre);
 				
 				if ( dao.update(v) ) {

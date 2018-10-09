@@ -1,6 +1,5 @@
-<!--INDEX ROL-->
+<%@page import="com.ipartek.formacion.youtube.controller.back.CrudControllable"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="com.ipartek.formacion.youtube.controller.back.BackofficeRolController"%>
 <%@ include file="../includes/header.jsp"%>
 <%@ include file="../includes/navbar.jsp"%>
 
@@ -9,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">
-				<i class="fas fa-users-cog"></i>Roles
+				<i class="fas fa-users-cog"></i>Roles <span class="badge badge-secondary">${fn:length(roles)}</span></h1>
 			</h1>
 		</div>
 		<!-- /.col-lg-12 -->
@@ -25,7 +24,7 @@
 			</form>
 		</div>
 		<div class="col-md-4">
-			<a href="roles?id=-1&op=<%=BackofficeRolController.OP_IR_FORMULARIO %>" class="btn btn-success">Crear Nuevo</a>
+			<a href="roles?id=-1&op=<%=CrudControllable.OP_IR_FORMULARIO %>" class="btn btn-success">Crear Nuevo</a>
 		</div>
 	</div>
 
@@ -44,7 +43,7 @@
 				<c:forEach items="${roles}" var="r">
 					<tr>
 						<td>${r.id}</td>
-			            <td><a href="roles?id=${r.id}&op=<%=BackofficeRolController.OP_IR_FORMULARIO%>">${r.nombre}</a></td>			                
+			            <td><a href="roles?id=${r.id}&op=<%=CrudControllable.OP_IR_FORMULARIO%>">${r.nombre}</a></td>			                
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -54,4 +53,4 @@
 		</main>
 
 
-		<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/footer.jsp"%>

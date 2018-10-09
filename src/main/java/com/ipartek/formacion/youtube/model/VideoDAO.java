@@ -1,25 +1,23 @@
 package com.ipartek.formacion.youtube.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.ipartek.formacion.youtube.pojo.Video;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class VideoDAO implements CrudAble<Video> {
 
 	private static VideoDAO INSTANCE = null;
 
 	private final String SQL_GET_ALL = "SELECT id, codigo, nombre FROM video ORDER BY id DESC LIMIT 1000;";
-	private final String SQL_GET_BY_ID = "SELECT id, codigo, nombre FROM video WHERE id = ?;";
-	private final String SQL_UPDATE = "UPDATE video SET codigo = ?, nombre = ? WHERE id = ?;";
-	private final String SQL_DELETE = "DELETE FROM video WHERE id=?;";
-	private final String SQL_INSERT = "INSERT INTO video (codigo, nombre) VALUES (? , ?);";
+	private final String SQL_GET_BY_ID = "SELECT  id, codigo, nombre FROM video WHERE id = ?;";
+	private final String SQL_UPDATE = "UPDATE video SET codigo= ? , nombre= ? WHERE id = ?;";
+	private final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
+	private final String SQL_INSERT = "INSERT INTO video (codigo, nombre) VALUES (?,?);";
 
 	private VideoDAO() {
 		super();
@@ -35,27 +33,28 @@ public class VideoDAO implements CrudAble<Video> {
 	@Override
 	public boolean insert(Video pojo) {
 		boolean resul = false;
-
+		
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
-
+				PreparedStatement ps = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);){
+			
 			ps.setString(1, pojo.getCodigo());
 			ps.setString(2, pojo.getNombre());
-
+			
 			int affectedRows = ps.executeUpdate();
-			if (affectedRows == 1) {
-				resul = true;
-				//Conseguir ID generado
-				try (ResultSet rs = ps.getGeneratedKeys()){
-					while(rs.next()) {
-						pojo.setId(rs.getLong(1));
-						resul=true;
+			if ( affectedRows == 1 ) {
+				
+				//conseguir ID generado
+				try ( ResultSet rs = ps.getGeneratedKeys() ){
+					while( rs.next() ) {
+						pojo.setId( rs.getLong(1) );
+						resul = true;						
 					}
-				}
+				} 
 				
 			}
-
-		} catch (Exception e) {
+			
+			
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resul;
@@ -68,9 +67,9 @@ public class VideoDAO implements CrudAble<Video> {
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement ps = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = ps.executeQuery();) {
-
-			while (rs.next()) {
-				videos.add(rowMapper(rs));
+			
+			while (rs.next()) {				
+				videos.add( rowMapper(rs) );
 			}
 
 		} catch (Exception e) {
@@ -81,20 +80,20 @@ public class VideoDAO implements CrudAble<Video> {
 	}
 
 	@Override
-	public Video getById(String id) {
+	public Video getById(long id) {
 		Video video = null;
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_GET_BY_ID);) {
-
-			ps.setString(1, id);
-
-			try (ResultSet rs = ps.executeQuery()) {
+			 PreparedStatement ps = con.prepareStatement(SQL_GET_BY_ID); 
+			){
+						
+			ps.setLong(1, id);
+			
+			try(ResultSet rs = ps.executeQuery()){			
 				while (rs.next()) {
 					video = rowMapper(rs);
 				}
-
 			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,34 +104,13 @@ public class VideoDAO implements CrudAble<Video> {
 	@Override
 	public boolean update(Video pojo) {
 		boolean resul = false;
-
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_UPDATE);) {
-
+			 PreparedStatement ps = con.prepareStatement(SQL_UPDATE);){
+			
 			ps.setString(1, pojo.getCodigo());
 			ps.setString(2, pojo.getNombre());
-			ps.setLong(3, pojo.getId());
-
-			int affectedRows = ps.executeUpdate();
-			if (affectedRows == 1) {
-				resul = true;
-				
-				
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return resul;
-	}
-
-	@Override
-	public boolean delete(String id) {
-		boolean resul = false;
-		try (Connection con = ConnectionManager.getConnection();
-			 PreparedStatement ps = con.prepareStatement(SQL_DELETE);){
+			ps.setLong  (3, pojo.getId());
 			
-			ps.setString(1, id);			
 			if ( ps.executeUpdate() == 1 ) {
 				resul = true;
 			}			
@@ -143,15 +121,31 @@ public class VideoDAO implements CrudAble<Video> {
 		return resul;
 	}
 
+	@Override
+	public boolean delete(long id) {
+		boolean resul = false;
+		try (Connection con = ConnectionManager.getConnection();
+			 PreparedStatement ps = con.prepareStatement(SQL_DELETE);){
+			
+			ps.setLong(1, id);			
+			if ( ps.executeUpdate() == 1 ) {
+				resul = true;
+			}			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
+	}
+	
+	
 	private Video rowMapper(ResultSet rs) throws Exception {
-		Video video = new Video();
-		if (rs != null) {
+		Video video= new Video();
+		if( rs != null) {
 			video.setId(rs.getLong("id"));
 			video.setCodigo(rs.getString("codigo"));
 			video.setNombre(rs.getString("nombre"));
 		}
 		return video;
 	}
-
-
 }

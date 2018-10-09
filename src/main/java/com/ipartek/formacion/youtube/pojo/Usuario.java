@@ -4,33 +4,30 @@ public class Usuario {
 	
 	private long id;
 	private String nombre;
-	private String password;
+	private String password;	
+	private Rol rol;
 	
-	private int rol;//TODO crear pojo y tabla rol
-	
-	public static final int ROL_ADMIN = 0;
-	public static final int ROL_USER = 1;
 	
 	public Usuario() {
 		super();
-		this.id = -1;
+		this.id=-1;
 		this.nombre = "";
 		this.password = "";
-		this.rol = ROL_USER;
+		this.rol = new Rol();
 	}
 
 		
 	public Usuario(String nombre, String password) {
 		this();
-		this.id = -1;
-		this.nombre = nombre.trim();
-		this.password = password.trim();
-		//this.rol = rol;
+		this.nombre = nombre;
+		this.password = password;
 	}
-	
+
+
 	public long getId() {
 		return id;
 	}
+
 
 	public void setId(long id) {
 		this.id = id;
@@ -41,25 +38,28 @@ public class Usuario {
 		return nombre;
 	}
 
+
 	public void setNombre(String nombre) {
-		this.nombre = nombre.trim();
+		this.nombre = nombre;
 	}
+
 
 	public String getPassword() {
 		return password;
 	}
 
+
 	public void setPassword(String password) {
-		this.password = password.trim();
+		this.password = password;
 	}
 
 
-	public int getRol() {
+	public Rol getRol() {
 		return rol;
 	}
 
 
-	public void setRol(int rol) {
+	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
 
@@ -68,7 +68,4 @@ public class Usuario {
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", password=" + password + ", rol=" + rol + "]";
 	}
-
-	
-	
 }

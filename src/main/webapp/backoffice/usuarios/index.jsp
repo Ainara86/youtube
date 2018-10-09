@@ -1,5 +1,5 @@
+<%@page import="com.ipartek.formacion.youtube.controller.back.CrudControllable"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="com.ipartek.formacion.youtube.controller.back.BackofficeUsuarioController"%>
 <%@ include file="../includes/header.jsp"%>
 <%@ include file="../includes/navbar.jsp"%>
 
@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">
-				<i class="fas fa-users-cog"></i>Usuarios
+				<i class="fas fa-users-cog"></i>Usuarios <span class="badge badge-secondary">${fn:length(usuarios)}</span>
 			</h1>
 		</div>
 		<!-- /.col-lg-12 -->
@@ -24,7 +24,7 @@
 			</form>
 		</div>
 		<div class="col-md-4">
-			<a href="usuarios?id=-1&op=<%=BackofficeUsuarioController.OP_IR_FORMULARIO %>" class="btn btn-success">Crear Nuevo</a>
+			<a href="usuarios?id=-1&op=<%=CrudControllable.OP_IR_FORMULARIO %>" class="btn btn-success">Crear Nuevo</a>
 		</div>
 	</div>
 
@@ -44,8 +44,8 @@
 				<c:forEach items="${usuarios}" var="u">
 					<tr>
 						<td>${u.id}</td>
-			            <td><a href="usuarios?id=${u.id}&op=<%=BackofficeUsuarioController.OP_IR_FORMULARIO%>">${u.nombre}</a></td>			                
-						<td>${ (u.rol==1)?'normal':'adminstrador' }</td>
+			            <td><a href="usuarios?id=${u.id}&op=<%=CrudControllable.OP_IR_FORMULARIO%>">${u.nombre}</a></td>			                
+						<td>${u.rol.nombre}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -55,4 +55,4 @@
 		</main>
 
 
-		<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/footer.jsp"%>

@@ -19,161 +19,157 @@ import com.ipartek.formacion.youtube.pojo.Rol;
  * Servlet implementation class BackofficeUsuarioController
  */
 @WebServlet("/backoffice/roles")
-public class BackofficeRolController extends HttpServlet {
+public class BackofficeRolController extends HttpServlet implements CrudControllable{
 	private static final long serialVersionUID = 1L;
 	private static RolDAO daoRol = null;
-
-	public static final String OP_LISTAR = "1";
-	public static final String OP_GUARDAR = "2"; // insert id == -1 o update id > 0
-	public static final String OP_ELIMINAR = "3";
-	public static final String OP_IR_FORMULARIO = "4";
-
+	
 	private static final String VIEW_LISTADO = "roles/index.jsp";
 	private static final String VIEW_FORMULARIO = "roles/form.jsp";
 	private String view;
 	private Alert alert;
-
-	private String op; // operacion a realizar
+	
+	private String op; //operacion a realizar
 	private String id;
 	private String nombre;
-
+		
+	
 	@Override
-	public void init(ServletConfig config) throws ServletException {
+	public void init(ServletConfig config) throws ServletException {	
 		super.init(config);
-		daoRol = RolDAO.getInstance();
+		daoRol  = RolDAO.getInstance();
 	}
-
+	
 	@Override
-	public void destroy() {
+	public void destroy() {	
 		super.destroy();
 		daoRol = null;
 	}
-
+    
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		doProcess(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doProcess(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+		doProcess(request, response);		
 	}
-
-	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+	
+	public void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try {
-
+			
 			alert = new Alert();
-
+			
 			getParameters(request);
-
+			
 			switch (op) {
 			case OP_ELIMINAR:
 				eliminar(request);
 				break;
 			case OP_IR_FORMULARIO:
 				irFormulario(request);
-				break;
+				break;	
 			case OP_GUARDAR:
 				guardar(request);
-				break;
+				break;	
 
-			default: // LISTAR
+			default:  //LISTAR
 				listar(request);
 				break;
 			}
-
-		} catch (Exception e) {
+			
+		}catch (Exception e) {
 			e.printStackTrace();
 			view = VIEW_LISTADO;
 			alert = new Alert();
-		} finally {
+		}finally {
 			request.setAttribute("alert", alert);
-			request.getRequestDispatcher(view).forward(request, response);
-
+			request.getRequestDispatcher(view).forward(request, response);			
 		}
-
+		
 	}
 
-	private void listar(HttpServletRequest request) throws Exception {
-
-		alert = null;
+	public void listar(HttpServletRequest request) throws Exception {
+		
+		alert = null;		
 		view = VIEW_LISTADO;
-		request.setAttribute("roles", daoRol.getAll());
-
+		
+		int totalRoles=daoRol.getAll().size();
+		
+		request.setAttribute("totalRoles", totalRoles);
+		request.setAttribute("roles", daoRol.getAll());		
+		
 	}
 
-	private void guardar(HttpServletRequest request) {
-
+	public void guardar(HttpServletRequest request) {
+		
 		Rol r = new Rol();
 		r.setId(Long.parseLong(id));
-		r.setNombre(nombre);
-
+		r.setNombre(nombre);		
+		
 		try {
-
-			if (r.getId() > 0) { // UPDATE
-				daoRol.update(r);
-			} else { // INSERT
-				daoRol.insert(r);
-			}
-
-			alert = new Alert(Alert.SUCCESS, "Usuario guardado con exito");
-		} catch (SQLIntegrityConstraintViolationException e) {
-			alert = new Alert(Alert.WARNING, "<b>" + r.getNombre() + "</b> usuario ya existe");
-		} catch (SQLException e) {
-			if(e.getMessage().contains("nombre")) {
-				alert = new Alert(Alert.WARNING, "El <b>nombre</b> debe de ser inferior a 50 caracteres");
-			}else {
-				alert = new Alert(Alert.WARNING, "La <b>contraseña</b> debe de ser inferior a 20 caracteres");
-			}
-		} catch (Exception e) {
+			if( r.getId() > 0 ) {			
+				daoRol.update(r);				
+			}else {                 
+				daoRol.insert(r);				
+			}			
+			alert = new Alert(Alert.SUCCESS, "Rol guardado con exito");	
+	
+		// nombre repetido
+		} catch ( SQLIntegrityConstraintViolationException e ) {
+			e.printStackTrace();
+			alert = new Alert(Alert.WARNING, "<b>" + r.getNombre() +  "</b> ya existe !!!" );
+		
+		//longitud campos nombre y password
+		}catch (SQLException e) {
+			e.printStackTrace();			
+			alert = new Alert(Alert.WARNING, "El <b>nombre</b> debe ser inferior a 50 caracteres");					
+		}catch (Exception e) {
 			e.printStackTrace();
 			alert = new Alert();
-		}
-
+		}	
+				
 		view = VIEW_FORMULARIO;
 		request.setAttribute("rol", r);
-
+		
 	}
 
-	private void irFormulario(HttpServletRequest request) throws Exception {
+	public void irFormulario(HttpServletRequest request) throws Exception {
 		alert = null;
 		view = VIEW_FORMULARIO;
-		if (id.equalsIgnoreCase("-1")) {
-			request.setAttribute("rol", new Rol());
-		} else {
-			request.setAttribute("rol", daoRol.getById(id));
+		if ( id.equalsIgnoreCase("-1")) {
+			request.setAttribute("rol", new Rol() );
+		}else {			
+			request.setAttribute("rol", daoRol.getById( Long.parseLong(id)));
 		}
 	}
 
-	// TODO para despues del cafe gestionar esta exception
-	private void eliminar(HttpServletRequest request) throws Exception {
+	
+	public void eliminar(HttpServletRequest request) throws Exception {
+		
 		try {
-			daoRol.delete(id);
-			alert = new Alert(Alert.SUCCESS, "Rol Eliminado");
+			if ( daoRol.delete(Long.parseLong(id))) {
+				alert = new Alert(Alert.SUCCESS, "Rol Eliminado");
+			}else {
+				alert = new Alert(Alert.WARNING, "NO se puedo Eliminar");
+			}	
 		}catch (Exception e) {
-			alert = new Alert(Alert.SUCCESS, "No podemos eliminar el rol");
-		}
-
+			alert = new Alert(Alert.WARNING, "No podemos eliminar el rol porque tiene usuarios asociados");
+		}	
 		view = VIEW_LISTADO;
-		request.setAttribute("roles", daoRol.getAll());
-
+		request.setAttribute("roles", daoRol.getAll());	
+		
 	}
 
-	private void getParameters(HttpServletRequest request) {
-
-		op = (request.getParameter("op") != null) ? request.getParameter("op") : OP_LISTAR;
+	public void getParameters(HttpServletRequest request) {		
+		op = ( request.getParameter("op") != null ) ? request.getParameter("op") : OP_LISTAR;		
 		id = request.getParameter("id");
-		nombre = request.getParameter("nombre");
+		nombre = request.getParameter("nombre");		
 	}
 
 }

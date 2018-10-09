@@ -13,7 +13,7 @@
 
             <ul class="nav navbar-top-links navbar-right">
             	<li>
-                	<a href="logout">Cerra Session</a>
+                	<a href="../logout">Cerra Session</a>
                 </li>	
             </ul>
             <!-- /.navbar-top-links -->
@@ -23,16 +23,16 @@
                     <ul class="nav" id="side-menu">
                        
                         <li>
-                            <a href="inicio"><i class="fa fa-dashboard fa-fw"></i> Inicio</a>
+                            <a href="inicio"><i class="fas fa-home"></i>Inicio</a>
                         </li>
                         <li>
-                            <a href="usuarios"><i class="fa fa-dashboard fa-fw"></i> Usuarios</a>
+                            <a href="usuarios"><i class="fa fas fa-users"></i>Usuarios</a>
                         </li>
                         <li>
-                            <a href="videos"><i class="fa fa-dashboard fa-fw"></i> Videos</a>
+                            <a href="videos"><i class="fab fa-youtube"></i>Videos</a>
                         </li>
                         <li>
-                            <a href="roles"><i class="fa fa-dashboard fa-fw"></i> Roles</a>
+                            <a href="roles"><i class="fas fa-user-tag"></i>Roles </a>
                         </li>
                        
                     </ul>

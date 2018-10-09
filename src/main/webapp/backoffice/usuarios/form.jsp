@@ -1,3 +1,4 @@
+<%@page import="com.ipartek.formacion.youtube.controller.back.CrudControllable"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="com.ipartek.formacion.youtube.controller.back.BackofficeUsuarioController"%>
 <%@page import="com.ipartek.formacion.youtube.pojo.Usuario"%>
@@ -24,21 +25,26 @@
 			</div>
 			<div class="form-group">
 				<label for="password" class="required">Contraseña</label>
+				<div class="input-group">
+      		<div class="input-group-addon"><i class="fas fa-eye" onclick="showpass(event, 'password')"></i></div>
 				<input type="password" class="form-control" name="password" id="password" value="${usuario.password}" />
+			</div>
 			</div>
 			<div class="form-group">
 				<label for="rol">Rol</label>
+				
 				<select name="rol" class="form-control">
-					<option value="${Usuario.ROL_USER}"  ${(usuario.rol == Usuario.ROL_USER)?'selected':'' }>Normal</option>
-			   		<option value="${Usuario.ROL_ADMIN}"  ${(usuario.rol == Usuario.ROL_ADMIN)?'selected':'' }  >Administrador</option>
+					<c:forEach items="${roles}" var="rol">
+					<option value="${rol.id}"${(rol.id==usuario.rol.id)?'selected':''}>${rol.nombre}</option>
+					</c:forEach>
 				</select>
 			</div>
-			<input type="hidden" name="op" value="<%=BackofficeUsuarioController.OP_GUARDAR%>">
+			<input type="hidden" name="op" value="<%=CrudControllable.OP_GUARDAR%>">
 			<input type="submit"
 				value="${(usuario.id==-1)?'Crear usuario': 'Modificar usuario' }"
 				class="btn btn-primary btn-block">
 			<c:if test="${usuario.id > 0}">
-      				<a href="usuarios?id=${usuario.id}&op=<%=BackofficeUsuarioController.OP_ELIMINAR %>" onclick="confirmar(event)" class="btn btn-danger btn-block">Eliminar(Modal)</a>
+      				<a href="usuarios?id=${usuario.id}&op=<%=CrudControllable.OP_ELIMINAR %>" onclick="confirmar(event)" class="btn btn-danger btn-block">Eliminar(Modal)</a>
 			</c:if>
 		</form>
 		
