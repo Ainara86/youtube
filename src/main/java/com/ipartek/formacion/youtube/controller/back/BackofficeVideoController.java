@@ -108,7 +108,7 @@ public class BackofficeVideoController extends HttpServlet implements CrudContro
 			view = VIEW_LISTADO;
 			
 			request.setAttribute("busqueda", busqueda);
-			request.setAttribute("videos", daoVideo.busquedaVideo(busqueda));
+			request.setAttribute("videos", daoVideo.busqueda(busqueda));
 		}else {
 			alert = null;		
 			view = VIEW_LISTADO;
@@ -140,7 +140,7 @@ public class BackofficeVideoController extends HttpServlet implements CrudContro
 		// nombre repetido
 		} catch ( SQLIntegrityConstraintViolationException e ) {
 			e.printStackTrace();
-			alert = new Alert(Alert.WARNING, "<b>" + v.getNombre() +  "</b> ya existe !!!" );
+			alert = new Alert(Alert.WARNING, "<b>" + v.getCodigo() +  "</b> ya existe !!!" );
 		
 		//longitud campos nombre y password
 		}catch (SQLException e) {

@@ -159,15 +159,15 @@ public class VideoDAO implements CrudAble<Video> {
 		return video;
 	}
 	
-	public List<Video> busquedaVideo(String palabra){
+	public List<Video> busqueda(String palabra){
 		ArrayList<Video> palabraEncontrada = new ArrayList<Video>();
 		
 		if(palabraEncontrada!=null) {
-			for(Video video : palabraEncontrada) {
-				String nombreYcodigo=video.getNombre()+video.getCodigo();
+			for(Video v : video) {
+				String nombreYcodigo=v.getNombre()+v.getCodigo();
 				palabra=palabra.toLowerCase();
 				if(nombreYcodigo.contains(palabra)) {
-					palabraEncontrada.add(video);
+					palabraEncontrada.add(v);
 				}
 			}
 		}
