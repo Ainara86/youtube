@@ -17,7 +17,7 @@ public interface CrudControllable {
 			throws ServletException, IOException;
 	public void getParameters(HttpServletRequest request);
 	public void listar(HttpServletRequest request) throws Exception;
-	public void guardar(HttpServletRequest request);
+	public void guardar(HttpServletRequest request) throws Exception;
 	public void irFormulario(HttpServletRequest request) throws Exception;
 	public void eliminar(HttpServletRequest request) throws Exception;
 	

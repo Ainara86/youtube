@@ -1,5 +1,9 @@
 i{
-	width: 90px;
+	width: 35px;
+}
+
+i.list{
+	width: 50px;
 }
 
 .container {
@@ -21,4 +25,7 @@ i{
     margin-top: 15px;
     border: 1px solid transparent;
     border-radius: 4px;
+}
+.thumbnail{
+	    width: 135px;
 }

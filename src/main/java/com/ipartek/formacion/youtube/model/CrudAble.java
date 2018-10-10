@@ -1,6 +1,5 @@
 package com.ipartek.formacion.youtube.model;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

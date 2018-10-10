@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">
-				<i class="fas fa-users-cog"></i>Roles <span class="badge badge-secondary">${fn:length(roles)}</span></h1>
+				<i class="fas fa-users-cog list"></i>Roles <span class="badge badge-secondary">${fn:length(roles)}</span></h1>
 			</h1>
 		</div>
 		<!-- /.col-lg-12 -->
@@ -31,7 +31,7 @@
 	<div class="row">
 		<main class="container" role="main">
 
-		<table id="listado-roles" class="display">
+		<table id="listado" class="display">
 			<thead>
 				<tr>
 					<th>Id</th>

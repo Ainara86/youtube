@@ -7,4 +7,4 @@
 		${alert.texto}
 	</div>
 </div>
-${sessionScope.alert=null}
+
