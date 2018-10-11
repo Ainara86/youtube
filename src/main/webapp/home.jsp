@@ -115,19 +115,8 @@
 						</span> 4.0 stars
 					</div><!--fin div card-body -->
 				</div><!-- fin div card mt-4-->
-				<div class="card card-outline-secondary m-2">
-					<div class="card-header">
-						<div class="row align-items-center">
-							<div class="col-6">
-								<h2>Comentarios</h2>
-							</div>
-							<div class="col-6 text-right">
-								<a href="#form-comentario" class="btn ">Añade un comentario</a>
-							</div>
-						</div><!--Fin col-6 text-right  -->
-					</div><!-- Fin card-header -->
-				</div><!-- div card card-outline-secondary m-2 -->
-
+				
+				<%@include file="includes/comentarios.jsp" %>	
 	
 				</div> <!-- /.col-lg-9 -->
 	

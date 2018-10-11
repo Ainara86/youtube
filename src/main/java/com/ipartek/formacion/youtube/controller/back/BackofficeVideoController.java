@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.ipartek.formacion.youtube.model.UsuarioDAO;
 import com.ipartek.formacion.youtube.model.VideoDAO;
 import com.ipartek.formacion.youtube.pojo.Alert;
-import com.ipartek.formacion.youtube.pojo.Usuario;
 import com.ipartek.formacion.youtube.pojo.Video;
-import com.ipartek.formacion.youtube.pojo.Video.Exception_Codigo;
 
 /**
  * Servlet implementation class BackofficeUsuarioController
@@ -103,20 +101,13 @@ public class BackofficeVideoController extends HttpServlet implements CrudContro
 	}
 
 	public void listar(HttpServletRequest request) throws Exception {
-		if(busqueda!=null && !busqueda.isEmpty()) {
-			alert = null;		
-			view = VIEW_LISTADO;
-			
-			request.setAttribute("busqueda", busqueda);
-			request.setAttribute("videos", daoVideo.busqueda(busqueda));
-		}else {
-			alert = null;		
-			view = VIEW_LISTADO;
-			
-			request.setAttribute("videos", daoVideo.getAll());	
-		}
-				
 		
+			alert = null;		
+			view = VIEW_LISTADO;
+			
+		
+			request.setAttribute("videos", daoVideo.getAll());	
+	
 	}
 
 	public void guardar(HttpServletRequest request) throws Exception {

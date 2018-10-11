@@ -42,8 +42,10 @@
 		         <!-- usuario logeado -->
 		         <c:if test="${not empty sessionScope.usuario}">
 		           <div class="nav-user">             	
-		           	<i class="fas fa-user">${usuario.nombre}</i>             	
-		           	<a href="backoffice/index.jsp">Acceder Backoffice</a>
+		           	<i class="fas fa-user">${usuario.nombre}</i>  
+		           	<c:if test="${usuario.nombre=='admin'}">           	
+		           		<a href="backoffice/index.jsp">Acceder Backoffice</a>
+		           	</c:if>
 		           	<a href="logout">Cerrar Session</a>
 		           </div>            
 		         
@@ -56,10 +58,7 @@
 		       </c:if>
 		        
          </li>            
-       </ul>
-       
-       
-       
+       </ul> 
      </div>
    </div>
  </nav>

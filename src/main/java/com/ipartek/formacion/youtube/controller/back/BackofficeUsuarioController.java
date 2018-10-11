@@ -199,5 +199,4 @@ public class BackofficeUsuarioController extends HttpServlet implements CrudCont
 		password = request.getParameter("password");
 		rol = request.getParameter("rol");
 	}
-
 }

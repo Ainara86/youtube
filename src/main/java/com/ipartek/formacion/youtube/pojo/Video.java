@@ -23,7 +23,11 @@ public class Video {
 		this.setCodigo(codigo);
 		this.nombre = nombre;
 	}
-
+	
+	public Video(long videoId) {
+		this();
+		this.id = videoId;
+	}
 
 	public void setCodigo(String codigo) throws Exception {
 		if ( codigo != null && codigo.length() == CODIGO_LONGITUD ) {
@@ -66,6 +70,7 @@ public class Video {
 		return "Video [id=" + id + ", codigo=" + codigo + ", nombre=" + nombre + ", usuario=" + usuario + "]";
 	}
 
+	@SuppressWarnings("serial")
 	public static class Exception_Codigo extends Exception {
 		Exception_Codigo(){
 			super("El IDENTIFICADOR debe ser exactamente de " + CODIGO_LONGITUD + " caracteres");

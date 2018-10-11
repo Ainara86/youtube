@@ -22,6 +22,7 @@ public class VideoDAO implements CrudAble<Video> {
 	private final String SQL_UPDATE = "UPDATE video SET codigo= ? , nombre= ?, id_usuario= ? WHERE id = ?;";
 	private final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO video (codigo, nombre,id_usuario) VALUES (?,?,?);";
+	private final String SQL_BUSQUEDA= "SELECT * FROM video WHERE nombre LIKE '%?%';";
 
 	private VideoDAO() {
 		super();
@@ -159,11 +160,11 @@ public class VideoDAO implements CrudAble<Video> {
 		return video;
 	}
 	
-	public List<Video> busqueda(String palabra){
+	/*public List<Video> busqueda(String palabra){
 		ArrayList<Video> palabraEncontrada = new ArrayList<Video>();
 		
 		if(palabraEncontrada!=null) {
-			for(Video v : video) {
+			for(Video v : videos) {
 				String nombreYcodigo=v.getNombre()+v.getCodigo();
 				palabra=palabra.toLowerCase();
 				if(nombreYcodigo.contains(palabra)) {
@@ -172,5 +173,5 @@ public class VideoDAO implements CrudAble<Video> {
 			}
 		}
 		return palabraEncontrada;
-	}
+	}*/
 }
