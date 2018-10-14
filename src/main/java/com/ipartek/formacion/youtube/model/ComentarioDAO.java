@@ -8,19 +8,25 @@ import java.util.List;
 
 import com.ipartek.formacion.youtube.pojo.Comentario;
 import com.ipartek.formacion.youtube.pojo.Usuario;
+import com.ipartek.formacion.youtube.pojo.Video;
 import com.mysql.jdbc.Statement;
 
 public class ComentarioDAO implements CrudAble<Comentario> {
 
 	private static ComentarioDAO INSTANCE = null;
 
-	private final String SQL_GET_ALL = "SELECT id, nombre FROM rol ORDER BY id DESC LIMIT 1000;";
+	private final String SQL_GET_ALL = "SELECT 	c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre, c.id_video as 'id_video', v.nombre"+
+			" FROM comentario as c , usuario as u, video as v" + 
+			" WHERE c.id_usuario = u.id AND c.id_video=v.id"+
+			" ORDER BY c.id DESC LIMIT 500;";
 	private final String SQL_GET_ALL_BY_VIDEO_ID = "SELECT 	c.id as 'id_comentario',    u.id as 'id_usuario',    fecha,    texto,    aprobado,    u.nombre "
 			+ " FROM comentario as c , usuario as u " + " WHERE c.id_usuario = u.id AND "
 			+ " c.id_video = ? AND aprobado = 1 " + " ORDER BY c.id DESC LIMIT 500;";
-	private final String SQL_GET_BY_ID = "SELECT id, nombre FROM rol WHERE id = ?;";
-	private final String SQL_UPDATE = "UPDATE rol SET nombre= ? WHERE id = ?;";
-	private final String SQL_DELETE = "DELETE FROM rol WHERE id = ?;";
+	private final String SQL_GET_BY_ID = "SELECT c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre "
+			+ " FROM comentario as c , usuario as u " + " WHERE c.id_usuario = u.id AND "
+			+ " c.id = ? " + " ORDER BY c.id DESC LIMIT 500;";
+	private final String SQL_UPDATE = "UPDATE comentarios SET id_usuario= ? WHERE id = ?;";
+	private final String SQL_DELETE = "DELETE FROM comentario WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO `comentario` (`texto`, `id_video`, `id_usuario`) VALUES (?,?,?);";
 
 	private ComentarioDAO() {
@@ -61,8 +67,20 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 
 	@Override
 	public List<Comentario> getAll() throws Exception {
+		Comentario comentario = null;
 
-		return null;
+		ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_GET_ALL);
+				ResultSet rs = ps.executeQuery();) {
+
+			while (rs.next()) {
+				comentarios.add(rowMapper(rs));
+			}
+
+		} 
+
+		return comentarios;
 	}
 
 	public List<Comentario> getAllByVideo(long videoId) throws Exception {
@@ -76,7 +94,7 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					comentarios.add(rowMapper(rs, comentario));
+					comentarios.add(rowMapper(rs));
 				}
 			}
 
@@ -86,37 +104,78 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 
 	@Override
 	public Comentario getById(long id) throws Exception {
+		Comentario comentario = null;
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_GET_BY_ID);) {
 
-		return null;
+			ps.setLong(1, id);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					comentario = rowMapper(rs);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return comentario;
 	}
 
 	@Override
 	public boolean update(Comentario pojo) throws Exception {
 
-		return false;
+		boolean resul = false;
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_UPDATE);) {
+
+			ps.setLong(1, pojo.getUsuario().getId());
+			ps.setLong(2, pojo.getId());
+
+			if (ps.executeUpdate() == 1) {
+				resul = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
 	}
 
 	@Override
 	public boolean delete(long id) throws Exception {
-		return false;
+		boolean resul = false;
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_DELETE);) {
+
+			ps.setLong(1, id);
+			
+			if (ps.executeUpdate() == 1) {
+				resul = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
 	}
 
-	private Comentario rowMapper(ResultSet rs, Comentario c) throws Exception {
-		if (c == null) {
-			c = new Comentario();
-		}
+	private Comentario rowMapper(ResultSet rs) throws Exception {
+		Comentario c= new Comentario();
 		if (rs != null) {
 			c.setId(rs.getLong("id_comentario"));
 			c.setAprobado(rs.getBoolean("aprobado"));
 			c.setFecha(rs.getTimestamp("fecha"));
 			c.setTexto(rs.getString("texto"));
-
+			
 			Usuario u = new Usuario();
 			u.setId(rs.getLong("id_usuario"));
 			u.setNombre(rs.getString("nombre"));
 			c.setUsuario(u);
 		}
 		return c;
+		
 	}
 
 }

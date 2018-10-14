@@ -34,6 +34,9 @@
                         <li>
                             <a href="roles"><i class="fas fa-user-tag"></i>Roles </a>
                         </li>
+                        <li>
+                            <a href="roles"><i class="fas fa-user-tag"></i>Comentarios</a>
+                        </li>
                        
                     </ul>
                 </div>
