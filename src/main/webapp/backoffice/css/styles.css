@@ -29,3 +29,8 @@ i.list{
 .thumbnail{
 	    width: 135px;
 }
+
+.panel.panel-coment{
+	background-color:#007171;
+	color:white;
+}

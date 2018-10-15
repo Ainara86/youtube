@@ -15,7 +15,7 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 
 	private static ComentarioDAO INSTANCE = null;
 
-	private final String SQL_GET_ALL = "SELECT 	c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre, c.id_video as 'id_video', v.nombre"+
+	private final String SQL_GET_ALL = "SELECT c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre, c.id_video as 'id_video', v.nombre"+
 			" FROM comentario as c , usuario as u, video as v" + 
 			" WHERE c.id_usuario = u.id AND c.id_video=v.id"+
 			" ORDER BY c.id DESC LIMIT 500;";
@@ -25,9 +25,14 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 	private final String SQL_GET_BY_ID = "SELECT c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre "
 			+ " FROM comentario as c , usuario as u " + " WHERE c.id_usuario = u.id AND "
 			+ " c.id = ? " + " ORDER BY c.id DESC LIMIT 500;";
-	private final String SQL_UPDATE = "UPDATE comentarios SET id_usuario= ? WHERE id = ?;";
+	private final String SQL_UPDATE = "UPDATE comentario SET aprobado= ? WHERE id = ?;";
 	private final String SQL_DELETE = "DELETE FROM comentario WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO `comentario` (`texto`, `id_video`, `id_usuario`) VALUES (?,?,?);";
+	private final String SQL_GET_ALL_APROBADOS = "SELECT c.id as 'id_comentario', c.fecha, c.texto, c.id_video, c.aprobado, u.id as 'id_usuario', u.nombre" + 
+			" FROM comentario AS c, usuario u" + 
+			" WHERE c.id_usuario=u.id AND aprobado=0;";
+	
+	private final String SQL_UPDATE_APROBADOS="UPDATE comentario SET aprobado= ? WHERE id = ?;";
 
 	private ComentarioDAO() {
 		super();
@@ -102,6 +107,23 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 		return comentarios;
 	}
 
+	public List<Comentario> getAllByAprobado() throws Exception {
+		Comentario comentario = null;
+
+		ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_GET_ALL_APROBADOS);
+				ResultSet rs = ps.executeQuery();) {
+
+			while (rs.next()) {
+				comentarios.add(rowMapper(rs));
+			}
+
+		} 
+
+		return comentarios;
+	}
+	
 	@Override
 	public Comentario getById(long id) throws Exception {
 		Comentario comentario = null;
@@ -128,9 +150,9 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 
 		boolean resul = false;
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_UPDATE);) {
+				PreparedStatement ps = con.prepareStatement(SQL_UPDATE_APROBADOS);) {
 
-			ps.setLong(1, pojo.getUsuario().getId());
+			ps.setBoolean(1, pojo.isAprobado());
 			ps.setLong(2, pojo.getId());
 
 			if (ps.executeUpdate() == 1) {

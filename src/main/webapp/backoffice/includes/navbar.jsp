@@ -35,7 +35,10 @@
                             <a href="roles"><i class="fas fa-user-tag"></i>Roles </a>
                         </li>
                         <li>
-                            <a href="roles"><i class="fas fa-user-tag"></i>Comentarios</a>
+                            <a href="comentarios"><i class="fas fa-comments"></i>Gestionar comentarios</a>
+                        </li>
+                        <li>
+                            <a href="comentarios/aprobar"><i class="fas fa-check-double"></i>Comentarios aprobar</a>
                         </li>
                        
                     </ul>

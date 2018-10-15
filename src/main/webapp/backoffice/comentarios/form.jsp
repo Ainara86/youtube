@@ -25,11 +25,11 @@
 			</div>
 			<div class="form-group">
 				<label for="usuario">Usuario</label>
-					<select name="usuario" class="form-control">
-					<c:forEach items="${usuarios}" var="u">
-					<option value="${u.id}"${(u.id==comentario.usuario.id)?'selected':''}>${u.nombre}</option>
-					</c:forEach>
-				</select>
+				<input type="text" class="form-control" name="usuario"  id="usuario" value="${comentario.usuario.nombre}" autofocus />
+			</div>
+			<div class="form-group">
+				<label for="aprobado">Aprobado</label>
+				<input type="text" class="form-control" name="aprobado"  id="aprobado" value="${(comentario.aprobado)?1: 0 }" autofocus />
 			</div>
 			<input type="hidden" name="op" value="<%=CrudControllable.OP_GUARDAR%>">
 			<input type="submit"

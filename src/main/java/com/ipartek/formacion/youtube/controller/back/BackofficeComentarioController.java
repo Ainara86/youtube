@@ -37,8 +37,7 @@ public class BackofficeComentarioController extends HttpServlet implements CrudC
 	private String op; //operacion a realizar
 	private String id;
 	private String texto;
-	private String usuario;
-	private String video;
+	private boolean aprobado;
 	
 	
 	@Override
@@ -123,8 +122,7 @@ public class BackofficeComentarioController extends HttpServlet implements CrudC
 			
 			c.setId(Long.parseLong(id));
 			c.setTexto(texto);
-			c.setUsuario(daoUsuario.getById(Long.parseLong(usuario)));
-			c.setVideo(daoVideo.getById(Long.parseLong(video)));
+			c.setAprobado(aprobado);
 		
 		
 			if( c.getId() > 0 ) {			
@@ -177,7 +175,7 @@ public class BackofficeComentarioController extends HttpServlet implements CrudC
 			request.setAttribute("comentario", daoComentario.getById( Long.parseLong(id)));
 		}
 		
-		request.setAttribute("videos", daoVideo.getAll() );
+		request.setAttribute("videos", daoVideo.getAll());
 	}
 
 	
