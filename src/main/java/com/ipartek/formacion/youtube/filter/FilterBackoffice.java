@@ -2,7 +2,6 @@ package com.ipartek.formacion.youtube.filter;
 
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Map;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ipartek.formacion.youtube.pojo.Rol;
 import com.ipartek.formacion.youtube.pojo.Usuario;
 
 /**
@@ -30,7 +30,7 @@ public class FilterBackoffice implements Filter {
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// Se ejecuta al destruir el hilo
+		System.out.println("se ejecuta al destruir el filtro");
 	}
 
 	/**
@@ -38,75 +38,76 @@ public class FilterBackoffice implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		// Se ejecuta cada vez que coincide la URL pattern
+
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		
 		try {
-
 			HttpSession session = req.getSession();
 			Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-			if (usuario != null) {
-				// siempre que queremos que la request continue.
+			if (usuario.getRol().getId() == Rol.ROL_ADMIN) {
 				chain.doFilter(request, response);
 			} else {
-				
-				//TODO comprobar ROL del usuario
-				informacionCliente(req);
 
-				// usuario no logeado
+				//TODO comprobar ROL del usuario
+
+				informacionCliente(req);
+				
+
+				//usuario no logeado
 				res.sendRedirect(req.getContextPath() + "/inicio");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.sendRedirect(req.getContextPath() + "/inicio");
 		}
-
-	}
-
-	private void informacionCliente(HttpServletRequest req) {
-		//Sacar informacion del cliente
-		System.out.println("----------------------");
-		
-		System.out.println("RemoteHost --> " + req.getRemoteHost());
-		System.out.println("RemoteAddr --> " + req.getRemoteAddr());
-		System.out.println("RemotePort --> " + req.getRemotePort());
-		System.out.println("RemoteUser --> " + req.getRemoteUser());
-		
-		Enumeration nombresCabeceras=req.getHeaderNames();
-		String metadato;
-		
-		System.out.println("");
-		System.out.println("Cabeceras");
-		
-		
-		while ( nombresCabeceras.hasMoreElements() ) {
-			metadato=(String)nombresCabeceras.nextElement();
-			System.out.println(metadato +": "+ req.getHeader(metadato));
-		}
-		
-		
-		System.out.println("");
-		System.out.println("Parametros");
-		
-		//Map parametros = req.getParameterMap();
-		//parametros.
-		Map<String, String[]> todos=req.getParameterMap();
-	    for(String key:todos.keySet()){
-	        String[] parametros=(String[])todos.get(key);
-	        for(String val:parametros){
-	            System.out.println("Parametros= "+val);
-	        }   
-	    }
-		System.out.println("----------------------");
 	}
 
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		System.out.println("se ejecuta al iniciar la app");
+		System.out.println("se ejecuta al inciar la App Web");
+	}
+
+	/**
+	 * Mostramos informacion sobre la Request del cliente
+	 * 
+	 * @param req
+	 */
+	private void informacionCliente(HttpServletRequest req) {
+
+		System.out.println("----------------------------------------");
+
+		System.out.println("RemoteHost: " + req.getRemoteHost());
+		System.out.println("RemoteAddr: " + req.getRemoteAddr());
+		System.out.println("RemotePort: " + req.getRemotePort());
+		System.out.println("RemoteUser: " + req.getRemoteUser());
+
+		System.out.println("");
+		System.out.println("CABECERAS:");
+		Enumeration<String> nombresCabeceras = req.getHeaderNames();
+		String metadato;
+		while (nombresCabeceras.hasMoreElements()) {
+			metadato = (String) nombresCabeceras.nextElement();
+			System.out.println("    " + metadato + ": " + req.getHeader(metadato));
+		}
+
+		System.out.println("");
+		System.out.println("PARAMETROS:");
+		Enumeration<String> parameterNames = req.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String paramName = parameterNames.nextElement();
+			String[] paramValues = req.getParameterValues(paramName);
+			for (int i = 0; i < paramValues.length; i++) {
+				String paramValue = paramValues[i];
+				System.out.println("    " + paramName + ": " + paramValue);
+			}
+
+		}
+
+		System.out.println("----------------------------------------");
 	}
 
 }
