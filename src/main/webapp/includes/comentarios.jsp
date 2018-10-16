@@ -23,7 +23,7 @@
    	 <hr>
    	 
    	 <c:forEach items="${comentarios}" var="c">
-     	<p>${c.texto}</p>
+     	<p class="modal-body">${c.texto}</p>
      	<small class="text-muted"><b>${c.usuario.nombre}</b>  <fmt:formatDate value="${c.fecha}" pattern="dd/MM/yyyy HH:mm"/></small>
      	<hr>
      </c:forEach>

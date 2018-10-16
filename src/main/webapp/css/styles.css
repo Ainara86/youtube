@@ -97,4 +97,9 @@ main.container{
 	width: 85% !important;
 }
 
+.modal-body{
+	max-height: 50vh;
+	overflow-y: scroll;
+}
+
 

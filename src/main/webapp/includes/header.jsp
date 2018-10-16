@@ -31,7 +31,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/shop-item.css" rel="stylesheet">    
-    <link href="css/styles.css?v2" rel="stylesheet"></link>
+    <link href="css/styles.css?<%=System.currentTimeMillis()%>" rel="stylesheet"></link>
 
   </head>
 

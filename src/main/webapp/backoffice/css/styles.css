@@ -42,3 +42,8 @@ i.list{
 .hover-hand{
 	cursor: pointer;
 }
+
+.modal-body{
+	max-height: 25vh;
+	overflow-y: scroll;
+}
