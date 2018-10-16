@@ -15,26 +15,23 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 
 	private static ComentarioDAO INSTANCE = null;
 
-	private final String SQL_GET_ALL = "SELECT c.id, c.fecha, c.texto, c.aprobado, v.id as id_video, v.nombre as n_video,u.id as id_usuario, u.nombre as n_usuario "+
-			"FROM Comentario as c "+
-			"INNER JOIN Video as v ON c.id_video = v.id "+
-			"INNER JOIN Usuario as u ON c.id_usuario = u.id;";
-	private final String SQL_GET_ALL_BY_VIDEO_ID = "SELECT 	c.id as 'id_comentario',    u.id as 'id_usuario',    fecha,    texto,    aprobado,    u.nombre "
+	private final String SQL_GET_ALL = "SELECT c.id as 'id_comentario', c.fecha, c.texto, c.aprobado, v.id as 'id_video', v.nombre as 'n_video',u.id as 'id_usuario', u.nombre as 'nombre_usuario' "
+			+ "FROM Comentario as c " + "INNER JOIN Video as v ON c.id_video = v.id "
+			+ "INNER JOIN Usuario as u ON c.id_usuario = u.id;";
+	private final String SQL_GET_ALL_BY_VIDEO_ID = "SELECT 	c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre as 'nombre_usuario' "
 			+ " FROM comentario as c , usuario as u " + " WHERE c.id_usuario = u.id AND "
 			+ " c.id_video = ? AND aprobado = 1 " + " ORDER BY c.id DESC LIMIT 500;";
-	private final String SQL_GET_BY_ID = "SELECT c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre "
-			+ " FROM comentario as c , usuario as u " + " WHERE c.id_usuario = u.id AND "
-			+ " c.id = ? " + " ORDER BY c.id DESC LIMIT 500;";
-	//private final String SQL_UPDATE = "UPDATE comentario SET aprobado= ? WHERE id = ?;";
+	private final String SQL_GET_BY_ID = "SELECT c.id as 'id_comentario', u.id as 'id_usuario', fecha, texto, aprobado, u.nombre as 'nombre_usuario' "
+			+ " FROM comentario as c , usuario as u " + " WHERE c.id_usuario = u.id AND " + " c.id = ? "
+			+ " ORDER BY c.id DESC LIMIT 500;";
+	private final String SQL_GET_NO_APROBADOS = "SELECT c.id as 'id_comentario', c.fecha, c.texto, c.aprobado, v.id as 'id_video', v.nombre as 'n_video',u.id as 'id_usuario', u.nombre as 'nombre_usuario' "
+			+ "FROM Comentario as c " + "INNER JOIN Video as v ON c.id_video = v.id "
+			+ "INNER JOIN Usuario as u ON c.id_usuario = u.id " + "WHERE c.aprobado = 0;";
+
+	// private final String SQL_UPDATE_APROBADOS="UPDATE comentario SET aprobado= ?
+	// WHERE id = ?;";
 	private final String SQL_DELETE = "DELETE FROM comentario WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO `comentario` (`texto`, `id_video`, `id_usuario`) VALUES (?,?,?);";
-	private final String SQL_GET_NO_APROBADOS = "SELECT c.id, c.fecha, c.texto, c.aprobado, v.id as id_video, v.nombre as n_video,u.id as id_usuario, u.nombre as n_usuario "+
-			"FROM Comentario as c "+
-			"INNER JOIN Video as v ON c.id_video = v.id "+
-			"INNER JOIN Usuario as u ON c.id_usuario = u.id "+
-			"WHERE c.aprobado = 0;";
-	
-	private final String SQL_UPDATE_APROBADOS="UPDATE comentario SET aprobado= ? WHERE id = ?;";
 
 	private ComentarioDAO() {
 		super();
@@ -85,9 +82,52 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 				comentarios.add(rowMapper(rs));
 			}
 
-		} 
+		}
 
 		return comentarios;
+	}
+
+	public List<Comentario> getAllNoAprobado() throws Exception {
+		ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_GET_NO_APROBADOS);
+				ResultSet rs = ps.executeQuery();) {
+			while (rs.next()) {
+				comentarios.add(rowMapper(rs));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return comentarios;
+	}
+
+	public boolean updateAprobarComentarios(String[] ids) throws Exception {
+		boolean resul = false;
+		String id = "";
+		for (int i = 0; i < ids.length; i++) {
+			if (i == ids.length - 1) {
+				id += ids[i];
+			} else {
+				id += ids[i] + ",";
+			}
+		}
+
+		String sql_query = "UPDATE Comentario SET aprobado = 1 WHERE id IN (" + id + ");";
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql_query);) {
+
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows == 1) {
+				resul = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resul;
 	}
 
 	public List<Comentario> getAllByVideo(long videoId) throws Exception {
@@ -109,22 +149,6 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 		return comentarios;
 	}
 
-	public List<Comentario> getAllNoAprobado() throws Exception {
-		ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_GET_NO_APROBADOS);
-				ResultSet rs = ps.executeQuery();) {
-			while (rs.next()) {
-				comentarios.add(rowMapper(rs));
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return comentarios;
-	}
-	
 	@Override
 	public Comentario getById(long id) throws Exception {
 		Comentario comentario = null;
@@ -146,53 +170,6 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 		return comentario;
 	}
 
-	public boolean updateAprobarComentarios(String[] ids) throws Exception{
-		boolean resul = false;
-		String id = "";
-		for (int i = 0; i < ids.length; i++) {
-			if (i==ids.length-1) {
-				id+=ids[i];
-			}else {
-				id+=ids[i]+",";
-			}
-		}
-		
-		String sql_query = "UPDATE Comentario SET aprobado = 1 WHERE id IN ("+id+");";
-
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql_query);) {
-
-			int affectedRows = ps.executeUpdate();
-			if (affectedRows == 1) {
-				resul = true;
-			}
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}		
-		return resul;
-	}
-	
-	@Override
-	public boolean update(Comentario pojo) throws Exception {
-
-		boolean resul = false;
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement ps = con.prepareStatement(SQL_UPDATE_APROBADOS);) {
-
-			ps.setBoolean(1, pojo.isAprobado());
-			ps.setLong(2, pojo.getId());
-
-			if (ps.executeUpdate() == 1) {
-				resul = true;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return resul;
-	}
-
 	@Override
 	public boolean delete(long id) throws Exception {
 		boolean resul = false;
@@ -200,7 +177,7 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 				PreparedStatement ps = con.prepareStatement(SQL_DELETE);) {
 
 			ps.setLong(1, id);
-			
+
 			if (ps.executeUpdate() == 1) {
 				resul = true;
 			}
@@ -215,21 +192,31 @@ public class ComentarioDAO implements CrudAble<Comentario> {
 		Comentario c = new Comentario();
 		if (rs != null) {
 			c = new Comentario();
-			c.setId(rs.getLong("id"));
+			c.setId(rs.getLong("id_comentario"));
 			c.setFecha(rs.getDate("fecha"));
 			c.setTexto(rs.getString("texto"));
 			c.setAprobado(rs.getBoolean("aprobado"));
 			Usuario u = new Usuario();
 			u.setId(rs.getLong("id_usuario"));
-			u.setNombre(rs.getString("n_usuario"));
+			u.setNombre(rs.getString("nombre_usuario"));
 			c.setUsuario(u);
 			Video v = new Video();
-			v.setId(rs.getInt("id_video"));
-			v.setNombre(rs.getString("n_video"));
+			try {
+				v.setId(rs.getInt("id_video"));
+				v.setNombre(rs.getString("n_video"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			c.setVideo(v);
 		}
 		return c;
-		
+
+	}
+
+	@Override
+	public boolean update(Comentario pojo) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.youtube.model.ComentarioDAO;
 import com.ipartek.formacion.youtube.model.RolDAO;
 import com.ipartek.formacion.youtube.model.UsuarioDAO;
 import com.ipartek.formacion.youtube.model.VideoDAO;
@@ -23,6 +24,7 @@ public class BackofficeController extends HttpServlet {
 	private static UsuarioDAO daoUsuario;
 	private static VideoDAO daoVideo;
 	private static RolDAO daoRol;
+	private static ComentarioDAO daoComentario;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -30,6 +32,7 @@ public class BackofficeController extends HttpServlet {
 		daoUsuario = UsuarioDAO.getInstance();
 		daoVideo = VideoDAO.getInstance();
 		daoRol = RolDAO.getInstance();
+		daoComentario = ComentarioDAO.getInstance();
 	}
 	
 	
@@ -55,6 +58,8 @@ public class BackofficeController extends HttpServlet {
 				request.setAttribute("usuarios", daoUsuario.getAll().size());
 				request.setAttribute("videos", daoVideo.getAll().size());
 				request.setAttribute("roles", daoRol.getAll().size());
+				request.setAttribute("comentarios", daoComentario.getAll().size());
+				request.setAttribute("comentariosAprobado", daoComentario.getAllNoAprobado().size());
 			}catch (Exception e){
 				e.printStackTrace();
 			}finally{

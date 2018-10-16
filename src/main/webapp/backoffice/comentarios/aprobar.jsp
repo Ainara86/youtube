@@ -26,8 +26,11 @@
 				<thead>
 					<tr>
 						<th>Aprobado</th>
-						<th>Usuario</th>
+						<th>ID</th>
+						<th>Fecha</th>
 						<th>Comentario</th>
+						<th>Usuario</th>
+						<th>Video</th>
 					</tr>
 				</thead>
 
@@ -37,9 +40,9 @@
 							<td><input type="checkbox" value="${c.id}" name="ids"></td>
 							<td>${c.id}</td>
 							<td>${c.fecha}</td>
-							<td>${c.texto}</td>
+							<td class="hover-hand" onclick="showModal('${c.texto}', 'Detalle Comentario' )">${fn:substring(c.texto,0,100)}...</td>
 							<td>${c.usuario.nombre}</td>
-							<td>${c.video.nombre}</td>
+							<td class="hover-hand" data-toggle="tooltip" data-placement="right" title="${c.video.nombre}">${fn:substring(c.video.nombre,0,25)}...</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -52,4 +55,4 @@
 		</form>
 		</main>
 
-		<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/footer.jsp"%>

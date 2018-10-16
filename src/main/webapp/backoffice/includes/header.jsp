@@ -18,14 +18,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Backoffice Youtube</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/sb-admin-2.css" rel="stylesheet">
-	<link href="css/styles.css?v3" rel="stylesheet" type="text/css">
+	<link href="css/styles.css?<%=System.currentTimeMillis()%>" rel="stylesheet" type="text/css">
    
     <!-- Custom Fonts -->
     <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet" type="text/css">
@@ -42,4 +42,4 @@
 
 <body>
 
-    <div id="wrapper">
+<div id="wrapper">

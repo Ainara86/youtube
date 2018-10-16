@@ -23,9 +23,6 @@
 				</div>
 			</form>
 		</div>
-		<div class="col-md-4">
-			<a href="comentarios?id=-1&op=<%=CrudControllable.OP_IR_FORMULARIO %>" class="btn btn-success">Crear Nuevo</a>
-		</div>
 	</div>
 
 	<div class="row">

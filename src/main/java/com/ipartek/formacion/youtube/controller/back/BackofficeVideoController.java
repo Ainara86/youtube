@@ -35,7 +35,6 @@ public class BackofficeVideoController extends HttpServlet implements CrudContro
 	private String nombre;
 	private String codigo;
 	private String usuario;
-	private String busqueda;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {	
@@ -193,6 +192,5 @@ public class BackofficeVideoController extends HttpServlet implements CrudContro
 		nombre = request.getParameter("nombre");
 		codigo = request.getParameter("codigo");
 		usuario = request.getParameter("usuario");
-		busqueda=request.getParameter("busqueda");
 	}
 }

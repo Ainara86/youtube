@@ -1,17 +1,33 @@
-        <footer id="listado-footer">
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalTitle"></h4>
+	      </div>
+	      <div class="modal-body" id="myModalBody">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+ 	<!-- Modal:end -->
 
-            <div>
-                <p>&copy; 2018</p>
-            </div>
-                
-        </footer>
 
     </div> <!-- /.contenedor -->
-
-    <!-- Scripts para plugin datatable -->
-
+    
+        <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
+   	<!-- datatables.net -->
+   	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 	
     <script>
         $(document).ready(function() {
@@ -20,6 +36,7 @@
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
                 }
             } );
+            $('[data-toggle="tooltip"]').tooltip();
         } );
         
         function showpass(event, elementId){
@@ -41,6 +58,15 @@
         		event.target.classList.add("fa-eye");
         	}
         }
+        
+        function showModal(texto, titulo){
+ 			console.log('click showModal texto=' + texto);
+ 			
+ 			document.getElementById('myModalBody').innerHTML = texto;
+ 			document.getElementById('myModalTitle').innerHTML = titulo;
+ 			
+ 			$('#myModal').modal('show');  
+ 		}
     
     </script>
     

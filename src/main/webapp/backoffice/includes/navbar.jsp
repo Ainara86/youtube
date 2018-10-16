@@ -7,7 +7,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="#"><img src="../images/log.png"></a>
                 <a class="navbar-brand" href="inicio">Backoffice</a>
+                <a class="navbar-brand" href="../inicio">Videos Youtube</a>
             </div>
             <!-- /.navbar-header -->
 

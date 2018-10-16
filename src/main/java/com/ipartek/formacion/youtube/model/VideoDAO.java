@@ -22,7 +22,7 @@ public class VideoDAO implements CrudAble<Video> {
 	private final String SQL_UPDATE = "UPDATE video SET codigo= ? , nombre= ?, id_usuario= ? WHERE id = ?;";
 	private final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO video (codigo, nombre,id_usuario) VALUES (?,?,?);";
-	private final String SQL_BUSQUEDA= "SELECT * FROM video WHERE nombre LIKE '%?%';";
+	//private final String SQL_BUSQUEDA= "SELECT * FROM video WHERE nombre LIKE '%?%';";
 
 	private VideoDAO() {
 		super();

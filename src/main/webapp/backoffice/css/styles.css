@@ -1,3 +1,7 @@
+img{
+	    width: 25px;
+    margin-top: -6px;
+}
 i{
 	width: 35px;
 }
@@ -30,7 +34,11 @@ i.list{
 	    width: 135px;
 }
 
-.panel.panel-coment{
-	background-color:#007171;
-	color:white;
+.panel.panel-color{
+	background-color:#060354;
+	color:#E3E2F7;
+}
+
+.hover-hand{
+	cursor: pointer;
 }
