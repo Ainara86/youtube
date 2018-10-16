@@ -47,7 +47,7 @@
 		           		<a href="backoffice/index.jsp">Acceder Backoffice</a>
 		           	</c:if>
 		           	<c:if test="${usuario.nombre!='admin'}">           	
-		           		<a href="frontend/index.jsp">Perfil</a>
+		           		<a href="perfil/inicio">Perfil</a>
 		           	</c:if>
 		           	<a href="logout">Cerrar Session</a>
 		           </div>            
