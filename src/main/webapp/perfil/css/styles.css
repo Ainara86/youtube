@@ -2,6 +2,10 @@ img{
 	    width: 25px;
     margin-top: -6px;
 }
+.perfil{
+	width: 180px;
+	align: center;
+}
 i{
 	width: 35px;
 }
@@ -35,8 +39,9 @@ i.list{
 }
 
 .panel.panel-color{
-	background-color:#060354;
+	background-color:#DAF7A6;
 	color:#E3E2F7;
+	width:210px;
 }
 
 .hover-hand{

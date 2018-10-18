@@ -7,9 +7,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="../images/log.png"></a>
-                <a class="navbar-brand" href="inicio">Playlist</a>
-                <a class="navbar-brand" href="../inicio">P</a>
+                <a class="navbar-brand" href="../inicio"><img src="../images/log.png"></a>
+
+                <a class="navbar-brand" href="perfil.jsp"><i class="fas fa-user"></i> ${sessionScope.usuario.nombre}</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -28,19 +28,13 @@
                             <a href="inicio"><i class="fas fa-home"></i>Inicio</a>
                         </li>
                         <li>
-                            <a href="usuarios"><i class="fa fas fa-users"></i>Usuarios</a>
+                            <a href="videos"><i class="fab fa-youtube"></i>Perfil</a>
                         </li>
                         <li>
                             <a href="videos"><i class="fab fa-youtube"></i>Videos</a>
                         </li>
                         <li>
-                            <a href="roles"><i class="fas fa-user-tag"></i>Roles </a>
-                        </li>
-                        <li>
-                            <a href="comentarios"><i class="fas fa-comments"></i>Gestionar comentarios</a>
-                        </li>
-                        <li>
-                            <a href="comentarios/aprobar"><i class="fas fa-check-double"></i>Comentarios aprobar</a>
+                            <a href="comentarios/aprobar"><i class="fas fa-check-double"></i>Comentarios</a>
                         </li>
                        
                     </ul>
