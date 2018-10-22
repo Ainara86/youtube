@@ -65,7 +65,7 @@ public class AltaController extends HttpServlet {
 			// TODO comprobar si existe el usuario
 			if (password.equals(password2)) {
 				Usuario u = new Usuario(nombre, password);
-				if (dao.insert(u)) {
+				if (dao.insertAlta(u)) {
 					view = HOME_CONTROLLER;
 					alert = new Alert(Alert.SUCCESS, "Gracias por registrarse");
 				} else {

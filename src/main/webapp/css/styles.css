@@ -84,13 +84,14 @@ body{
 }
 
 .pb-5, .py-5 {
+	margin-top: 10px;
     padding-bottom: 1rem!important;
     padding-top: 1rem!important;
 }
 
 /**/
 main.container{
-	min-height:68vh;
+	min-height:70vh;
 }
 
 /*Estilos del comentario*/

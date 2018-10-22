@@ -26,11 +26,13 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 	private final String SQL_UPDATE = "UPDATE usuario SET nombre= ? ,password= ?, id_rol=? WHERE id = ?;";
 	private final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO usuario (nombre, password, id_rol ) VALUES (?,?,?);";
-	
+	private final String SQL_INSERT_ALTA = "INSERT INTO usuario (nombre, password ) VALUES (?,?);";
 	private final String SQL_LOGIN = "SELECT u.id as 'id_usuario', u.nombre as 'nombre_usuario', password, id_rol as 'id_rol', r.nombre as 'nombre_rol' " +
 									 " FROM usuario as u, rol as r " + 
 									 " WHERE u.id_rol = r.id AND u.nombre=? AND password=?;";
-
+	
+	private final String SQL_NOMBRE="SELECT nombre FROM usuario WHERE nombre LIKE '?';";
+	
 	private UsuarioDAO() {
 		super();
 	}
@@ -50,15 +52,12 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 
 			ps.setString(1, pojo.getNombre().trim());
 			ps.setString(2, pojo.getPassword().trim());
-			ps.setLong(3, pojo.getRol().getId());		
+			ps.setLong(3, pojo.getRol().getId());
+					
 			
 
 			int affectedRows = ps.executeUpdate();
 			if (affectedRows == 1) {
-				/*
-				"select MAX(id) from usuario"
-				"select id from usuario order by id desc limit 1" 
-				*/
 				try ( ResultSet rs = ps.getGeneratedKeys() ){
 					while( rs.next() ) {
 						pojo.setId( rs.getLong(1) );
@@ -71,6 +70,32 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 		} 
 		return resul;
 	}
+	
+	public boolean insertAlta(Usuario pojo) throws Exception {
+		boolean resul = false;
+
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement ps = con.prepareStatement(SQL_INSERT_ALTA, Statement.RETURN_GENERATED_KEYS);) {
+
+			ps.setString(1, pojo.getNombre().trim());
+			ps.setString(2, pojo.getPassword().trim());
+
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows == 1) {
+				try ( ResultSet rs = ps.getGeneratedKeys() ){
+					while( rs.next() ) {
+						pojo.setId( rs.getLong(1) );
+						resul = true;						
+					}
+				}			
+
+			}
+
+		} 
+		return resul;
+	}
+	
+	
 
 	@Override
 	public List<Usuario> getAll() throws Exception {
@@ -160,6 +185,33 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 		} 
 		return resul;
 	}
+	
+	public boolean buscar(String nombre) {
+		boolean resul = false;
+		Usuario u = null;
+		try (Connection con = ConnectionManager.getConnection();
+
+				) {
+					try (PreparedStatement ps = con.prepareStatement(SQL_NOMBRE);) {
+						ps.setString(1, nombre);
+						ResultSet rs = ps.executeQuery();
+						
+						while (rs.next()) {
+							
+							u = rowMapper(rs, u);
+
+						}
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		if (u != null) {
+			resul = true;
+		}
+		return resul;
+	}
+	
 
 	private Usuario rowMapper(ResultSet rs, Usuario u) throws Exception {
 		if (u == null) {
@@ -173,12 +225,17 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 			u.setNombre(rs.getString("nombre_usuario"));
 			u.setPassword(rs.getString("password"));			
 			u.setId(rs.getLong("id_usuario"));
+			try {
+				Rol rol = new Rol();
+				rol.setId(rs.getLong("id_rol"));
+				rol.setNombre(rs.getString("nombre_rol"));
+				u.setRol(rol);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 			
-			Rol rol = new Rol();
-			rol.setId(rs.getLong("id_rol"));
-			rol.setNombre(rs.getString("nombre_rol"));
 			
-			u.setRol(rol);
+			
 			
 		}
 		return u;

@@ -34,7 +34,7 @@
 		         	</form>
 		         	
 		         	<li>
-		         		<a href="registro.jsp" class="btn btn-outline-info my-2 my-sm-0">Registrate</a>
+		         		<a href="alta.jsp" class="btn btn-outline-info my-2 my-sm-0">Registrate</a>
 		         	</li>
 		         	
 		       </c:if>         

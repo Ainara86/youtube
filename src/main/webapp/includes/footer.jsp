@@ -39,6 +39,50 @@
 	<script src="https://www.youtube.com/iframe_api"></script>
 	
 	<script>
+		function checkNombre(){
+			
+			var nombre = $('#nombre').val();
+			var help = $('#nombreHelp');//document.getElemntByID('nombreHelp')
+			console.log('checkNombre '+ nombre);
+			
+			//llamada AJAX es asincrona
+			var url = "checknombre";
+			$.ajax(url, {
+				"type": "post", // usualmente post o get
+				"success": function(result) {
+					//console.log("Llego el contenido y no hubo error", result);
+					//help.html(result.resultado);
+						
+					if(true === result.resultado){
+						help.html('nombre no disponible');//innerHTML
+						help.removeClass('text-success');
+						help.addClass('text-danger');
+					}else{
+						help.html('nombre disponible');//innerHTML
+						help.removeClass('text-danger');
+						help.addClass('text-success');
+					}
+				},
+				"error": function(result) {
+					console.error("Este callback maneja los errores", result);
+					help.html('ERROR INESPERADO');//innerHTML
+					help.removeClass('text-success');
+					help.addClass('text-danger');
+				},
+				"data": {"nombre": nombre}
+			});
+			
+			/*if(nombre != undefined && nombre == "pepe" ){
+				help.html('nombre no disponible');//innerHTML
+				help.removeClass('text-success');
+				help.addClass('text-danger');
+			}else{
+				
+				help.html('nombre disponible');//innerHTML
+				help.removeClass('text-danger');
+				help.addClass('text-success');
+			}*/
+		}
 	
 		function showModalEliminar( idVideo, operacion ){
 			console.log('showModalEliminar id=' + idVideo);
