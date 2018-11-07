@@ -194,13 +194,16 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 				) {
 					try (PreparedStatement ps = con.prepareStatement(SQL_NOMBRE);) {
 						ps.setString(1, nombre);
-						ResultSet rs = ps.executeQuery();
 						
-						while (rs.next()) {
-							
-							u = rowMapper(rs, u);
+						try(ResultSet rs = ps.executeQuery()){
+							while (rs.next()) {
+								
+								u = rowMapperBuscar(rs);
 
+							}
 						}
+						
+						
 					}
 
 				} catch (Exception e) {
@@ -214,6 +217,34 @@ public class UsuarioDAO implements CrudAble<Usuario> {
 	
 
 	private Usuario rowMapper(ResultSet rs, Usuario u) throws Exception {
+		if (u == null) {
+			u = new Usuario();
+		} else {
+
+		}
+
+		if (rs != null) {
+
+			u.setNombre(rs.getString("nombre_usuario"));
+			u.setPassword(rs.getString("password"));			
+			u.setId(rs.getLong("id_usuario"));
+			try {
+				Rol rol = new Rol();
+				rol.setId(rs.getLong("id_rol"));
+				rol.setNombre(rs.getString("nombre_rol"));
+				u.setRol(rol);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+		}
+		return u;
+	}
+	private Usuario rowMapperBuscar(ResultSet rs) throws Exception {
+		Usuario u = new Usuario();
 		if (u == null) {
 			u = new Usuario();
 		} else {

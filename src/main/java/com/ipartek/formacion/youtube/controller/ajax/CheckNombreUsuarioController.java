@@ -2,7 +2,6 @@ package com.ipartek.formacion.youtube.controller.ajax;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ipartek.formacion.youtube.model.UsuarioDAO;
-import com.ipartek.formacion.youtube.pojo.Usuario;
 
 /**
  * Servlet implementation class CheckNombreUsuarioController
@@ -19,12 +17,7 @@ import com.ipartek.formacion.youtube.pojo.Usuario;
 @WebServlet("/checknombre")
 public class CheckNombreUsuarioController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private static UsuarioDAO dao;
-	private ArrayList<Usuario> usuarios;
-	private Usuario usuario;
-	boolean existe;
-       
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -36,25 +29,23 @@ public class CheckNombreUsuarioController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		dao = UsuarioDAO.getInstance();
-		 
+		
 		try {
-			//Response con formato json
+			
 			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
+	        response.setCharacterEncoding("UTF-8");
 			
-			//recoge parametros
-			String nombre = request.getParameter("nombre");
-
-			existe= dao.buscar(nombre);			
-			
-			//Respuesta de salida
+	        String nombre = request.getParameter("nombre");
+	        
+	        UsuarioDAO dao = UsuarioDAO.getInstance();
+	        
+	        boolean existe = dao.buscar(nombre);
+	        
 			PrintWriter out = response.getWriter();
 	        out.print("{\"resultado\":"+existe+"}");
 	        out.flush();
-			
-			
-		}catch(Exception e){
+	        
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

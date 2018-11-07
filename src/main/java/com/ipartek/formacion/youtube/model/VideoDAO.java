@@ -1,5 +1,6 @@
 package com.ipartek.formacion.youtube.model;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +23,8 @@ public class VideoDAO implements CrudAble<Video> {
 	private final String SQL_UPDATE = "UPDATE video SET codigo= ? , nombre= ?, id_usuario= ? WHERE id = ?;";
 	private final String SQL_DELETE = "DELETE FROM video WHERE id = ?;";
 	private final String SQL_INSERT = "INSERT INTO video (codigo, nombre,id_usuario) VALUES (?,?,?);";
-	//private final String SQL_BUSQUEDA= "SELECT * FROM video WHERE nombre LIKE '%?%';";
+	// private final String SQL_BUSQUEDA= "SELECT * FROM video WHERE nombre LIKE
+	// '%?%';";
 
 	private VideoDAO() {
 		super();
@@ -133,7 +135,7 @@ public class VideoDAO implements CrudAble<Video> {
 				PreparedStatement ps = con.prepareStatement(SQL_DELETE);) {
 
 			ps.setLong(1, id);
-			
+
 			if (ps.executeUpdate() == 1) {
 				resul = true;
 			}
@@ -150,28 +152,45 @@ public class VideoDAO implements CrudAble<Video> {
 			video.setId(rs.getLong("id_video"));
 			video.setCodigo(rs.getString("codigo_video"));
 			video.setNombre(rs.getString("nombre_video"));
-			
+
 			Usuario u = new Usuario();
 			u.setId(rs.getLong("id_usuario"));
 			u.setNombre(rs.getString("nombre_usuario"));
-			
+
 			video.setUsuario(u);
 		}
 		return video;
 	}
-	
-	/*public List<Video> busqueda(String palabra){
-		ArrayList<Video> palabraEncontrada = new ArrayList<Video>();
-		
-		if(palabraEncontrada!=null) {
-			for(Video v : videos) {
-				String nombreYcodigo=v.getNombre()+v.getCodigo();
-				palabra=palabra.toLowerCase();
-				if(nombreYcodigo.contains(palabra)) {
-					palabraEncontrada.add(v);
+
+	public String ejemploPA(long idVideo) {
+
+		String resul = "PETA FIJO";
+		String sql = "{CALL `ejemplo`(?)}";
+		try (Connection con = ConnectionManager.getConnection();
+			 CallableStatement cs = con.prepareCall(sql)) {
+			//preparar parametros
+			cs.setLong(1, idVideo);
+			//ejecutar cs
+			try (ResultSet rs= cs.executeQuery()){
+				while(rs.next()) {
+					resul=rs.getString("nombre");
 				}
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			resul += "causa: " + e.getCause();
 		}
-		return palabraEncontrada;
-	}*/
+		return resul;
+	}
+
+	/*
+	 * public List<Video> busqueda(String palabra){ ArrayList<Video>
+	 * palabraEncontrada = new ArrayList<Video>();
+	 * 
+	 * if(palabraEncontrada!=null) { for(Video v : videos) { String
+	 * nombreYcodigo=v.getNombre()+v.getCodigo(); palabra=palabra.toLowerCase();
+	 * if(nombreYcodigo.contains(palabra)) { palabraEncontrada.add(v); } } } return
+	 * palabraEncontrada; }
+	 */
 }

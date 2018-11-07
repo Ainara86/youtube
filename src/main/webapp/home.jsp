@@ -11,6 +11,7 @@
 					<fmt:message key="lista.reproduccion">
 					</fmt:message>
 				</h4>
+				${pa}
 				<ul class="list-group">
 					<!-- ForEach videos -->
 					<c:forEach items="${videos}" var="v">          
